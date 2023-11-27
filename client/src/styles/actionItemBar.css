@@ -1,0 +1,96 @@
+.action-item-container{
+    margin-top: 50px;
+    border: 2px solid black;
+    box-shadow: 0 0 40px rgba(64, 49, 183, 0.6);
+    background-color: white;
+}
+
+.action-item-heading{
+    display: flex;
+    align-items: center;
+    /* background-color: blueviolet; */
+}
+
+.action-item-heading h4{
+   margin-right: 10px;
+   text-transform: uppercase;
+   font-family: Times, 'Times New Roman', serif;
+   padding-left: 10px;
+   color: rgb(53, 21, 178);
+   margin-top: 5px;
+   font-weight: 510;
+}
+
+.action-item-heading button{
+    margin-left: auto;
+    width: 10%;
+    margin-bottom: 5px;
+    /* background-color: rgb(51, 34, 122); */
+    /* background-color: #81858c; */
+    color: white;
+    margin-right: 15px;
+}
+
+
+.action-item-form{
+    /* background-color: rgb(250, 212, 212); */
+    /* padding: 10px; */
+    margin: 10px;
+}
+
+.action-item-form label{
+    margin: 5px;
+    font-weight: 450;
+}
+
+.action-item-form input{
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.action-item-form select{
+    margin: 5px;
+}
+
+.action-item-form-contents{
+    background-color: rgb(199, 189, 238);
+    padding: 10px;
+    margin: 10px;
+    padding-top: 20px;
+    border-radius: 10px;
+    
+}
+
+.action-item-name input{
+    margin-left: 50px;
+}
+
+.action-item-desc input{
+    margin-left: 10px;
+}
+
+.action-item-status select{
+    margin-left: 46px;
+}
+
+.action-item-updated i{
+    margin-left: 30px;
+}
+
+.action-item-project input{
+    margin-left: 55px;
+}
+
+.action-item-collab input{
+    margin-left: 10px;
+}
+
+.action-item-priority select{
+    margin-left: 55px;
+}
+
+.action-item-created i{
+    margin-left: 50px;
+}

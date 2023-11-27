@@ -1,0 +1,143 @@
+
+.table-container{
+    /* width: 100%; */    
+    /* overflow: scroll; */
+    /* border-collapse: collapse; */
+    /* border: 1px solid #090909; */
+    margin-top: 50px;
+   
+}
+
+table {
+    /* border-collapse: collapse; */
+    width: 100%;
+    /* overflow: scroll; */
+    /* border: 1px solid #ed7f7f; */
+    table-layout: fixed; 
+    overflow-x: auto;
+}
+
+.table-header-row{
+    background-color: rgb(114,87,186);
+    color: white;
+}
+
+.table-header-row-data{
+    border: 1px solid #090909;
+    text-align: center;
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    margin: 20px;
+    position: sticky;
+    background-color: rgb(114,87,186);
+    top: 0;
+    z-index: 2;
+}
+
+/* .table-header-row-data:nth-child(1) {
+    width: 30px;
+    text-align: center;
+}
+.table-header-row-data:nth-child(2) {
+    width: 30px;
+}
+.table-header-row-data:nth-child(3) {
+    width: 20px;
+}
+.table-header-row-data:nth-child(4) {
+    width: 20px;
+}
+.table-header-row-data:nth-child(5) {
+    width: 20px;
+}
+.table-header-row-data:nth-child(6) {
+    width: 20px;
+} */
+
+/* .table-header-row-data:hover{
+    display: inline;
+} */
+
+.table-row{
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    text-align: center;
+}
+
+.table-row:nth-of-type(odd) {
+    background: rgb(220, 214, 236);
+  }
+
+.table-row:nth-of-type(even) {
+background: white
+}
+
+
+.table-row-data{
+    /* border: 1px solid #ff0101; */
+    text-align: center;
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* .table-row-data:nth-child(1) {
+    width: 10px;
+} */
+.table-row-data:nth-child(2) {
+    width: 30px;
+    text-align: left;
+}
+/*
+.table-row-data:nth-child(3) {
+    width: 30px;
+}
+.table-row-data:nth-child(4) {
+    width: 30px;
+}*/
+.table-row-data:nth-child(5) {
+    width: 30px;
+    text-align: left;
+}
+
+.table-row-data:nth-child(6) {
+    width: 30px;    
+    text-align: left;
+} 
+
+/* .table-row-data:hover{
+    display: inline;
+    background-color: rgba(0, 0, 0);
+    color: white;
+    position: relative;
+} */
+
+/* .table-row-data:last-child:hover {
+    display: inline;
+    position: relative;
+    text-align: left;
+  } */
+
+
+.add-logo{
+    float: right;
+    width: 100px;  
+    margin-bottom: 10px
+}
+
+.logo-content{
+    padding-right: 10px;
+}
+
+.table-name-field{
+    text-decoration: none;
+    color: black;
+}
+
+.table-name-field:hover{
+    color: blue;
+}

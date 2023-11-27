@@ -1,0 +1,75 @@
+.ql-editor {
+    font-size: 16px; 
+  }
+
+.ql-toolbar {
+    background-color: rgb(210, 201, 246); 
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.ql-container {
+    background-color: #ffffff; 
+    /* border-bottom-left-radius: 10px; */
+    /* border-bottom-right-radius: 10px; */
+  }
+
+.progress-note{
+    margin-right: 20%;
+    margin-left: 20%;
+    margin-top: 50px;
+}
+
+/* .pn-react-quill{
+    background-color: white;
+} */
+
+.pn-button-section{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.pn-save-button{
+    width: 10%;
+    padding: 10px;
+    border-radius: 10px;
+    color: blueviolet;
+}
+
+.pn-cancel-button{
+    margin-left: auto;
+    margin-right: 10px;
+    width: 10%;
+    padding: 10px;
+    border-radius: 10px;
+    color: blueviolet;
+}
+
+.pn-edit-button{
+    margin-left: auto;
+    width: 10%;
+    padding: 10px;
+    border-radius: 10px;
+    color: blueviolet;
+}
+
+.pn-addnew-button-container{
+    margin-left: 38%;
+    margin-bottom: 40px;
+}
+
+.pn-addnew-button{
+    width: 160px;
+    border-radius: 20px;
+    border: none;
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(84, 212, 244));
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transform: scale(1);
+    transition: transform 0.2s;
+}
+
+.pn-addnew-button:hover{
+    transform: scale(1.1);
+}
+

@@ -1,0 +1,16 @@
+.add-new-item{
+    width: 100%;
+}
+
+.home-page{
+    /* background-image: url("https://images.pexels.com/photos/333513/pexels-photo-333513.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+    
+    
+    background-color: white; */
+    /* background-size: cover; */
+    background-image: linear-gradient(rgb(193, 192, 207), rgb(98, 49, 176));
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow: scroll;
+}

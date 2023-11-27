@@ -1,0 +1,11 @@
+const { ObjectId } = require("mongodb");
+
+const ApiHitCountSchema = {
+    user: {
+        type: ObjectId,
+        required: true
+    },
+    count: {
+        type: Number
+    }
+}

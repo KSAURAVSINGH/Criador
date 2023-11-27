@@ -1,0 +1,91 @@
+
+.header{
+    background-color: #ffffff;
+    border-radius: 5px;
+    height: 60px;
+}
+
+.register{
+    background-image: url("https://images.pexels.com/photos/333513/pexels-photo-333513.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.reg-form{
+    height: 620px;
+    width: 400px;
+    background-color: rgba(255,255,255,0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 55%;
+    left: 50%;
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 50px 35px;
+}
+
+.reg-form *{
+    font-family: 'Poppins',sans-serif;
+    color: rgb(255, 255, 255);
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+.reg-form h3{
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+}
+
+.reg-label{
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.reg-input{
+    display: block;
+    height: 50px;
+    width: 100%;
+    /* background-color: rgba(228,215,230,0.7); */
+    background-color: #E4D7F6;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: black;
+}
+
+.reg-input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #E4D7F6 inset; /* Change 'white' to your desired background color */
+  }
+
+::placeholder{
+    color: rgb(254, 254, 254);
+}
+
+.reg-btn{
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.reg-submit-button{
+    margin-top: 20px;
+}
+
+.reg-already-account{
+    padding: 20px;
+}

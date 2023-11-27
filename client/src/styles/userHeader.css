@@ -1,0 +1,64 @@
+
+.user-header{
+    border-bottom: 2px solid black;
+}
+
+
+.search-form{
+    margin-left: 350px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.search-input{
+    border-radius: 10px;
+    border-color: rgb(123, 117, 117);
+    background-color: rgb(185,180,205);
+    border: none;
+    width: 300px;
+    font-size: medium;
+    height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+}
+
+.search-input:focus {
+    outline-color: rgb(196, 186, 186);
+    background-color: white;
+  }
+
+.search-input::placeholder{
+    color: rgb(0, 0, 0);
+    font-size: large;
+}
+
+.search-icon{
+    margin-left: 10px;
+    font-size: 22px;
+    padding-top: 20px;
+}
+
+.header-profile-dropdown{
+    display: block;
+    position: absolute;
+    background-color: white;
+    border: 2px solid black;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.header-profile-link{
+    text-decoration: none;
+    color: black;    
+    height: 20px;
+}
+
+.header-profile-link-container{
+    padding: 4px;
+    border-bottom: 1px solid black;
+}
+
+.header-profile-link-container::selection {
+    background-color: transparent; 
+    color: inherit; 
+  }

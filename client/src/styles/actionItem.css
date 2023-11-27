@@ -1,0 +1,7 @@
+.action-item-page{
+    background-image: linear-gradient(rgb(193, 192, 207), rgb(98, 49, 176));
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow: scroll;
+}

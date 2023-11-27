@@ -1,0 +1,133 @@
+.new-item-pop-up {
+    font-family: Arial, sans-serif;    
+    margin-left: 100px;
+    margin-right: 100px;
+    background-color: aquamarine;
+}
+
+.overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 9;
+  }
+
+  .login-h3{
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+  }
+
+  .popup {
+    background: rgb(199, 189, 238);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .close-btn {
+    cursor: pointer;
+    color: #333;
+    font-size: 18px;
+  }
+
+.new-item-from{
+    height: 100%;
+    width: 400px;
+}
+
+.new-item-from label{
+    display: block;
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+    text-align: left;
+}
+
+.new-item-from input{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 0 10px;
+    margin-top: 5px;
+    font-size: 17px;
+    font-weight: 400;
+    color: black;
+    border: none;
+}
+
+.new-item-from input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fefeff inset; 
+  }
+
+  .new-item-from input:focus{
+    border: none
+  }
+  
+
+.item-dropdown{
+    margin-top: 15px;
+}
+
+.item-dropdown label{
+    display: inline;
+    margin-right: 5px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    text-align: left;
+}
+
+.status-dropdown{
+    float: left;
+}
+
+.item-dropdown select{
+    background-color: #ffffff;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: black;
+}
+
+.priority-dropdown{
+    float: right;
+}
+
+.item-form-buttons{
+    display: flex;
+    float: right;
+}
+
+.item-form-buttons button{
+    margin-top: 20px;
+    width: 100px;    
+    margin-left: 20px
+}
+
+/* .new-item-from button{
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 25px;
+    margin-bottom: 20px;
+} */

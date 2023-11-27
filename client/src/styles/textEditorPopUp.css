@@ -1,0 +1,91 @@
+.text-editor-pop-up{
+    font-family: Arial, sans-serif;
+}
+
+.editor-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 550px;  
+    align-items: center;
+    justify-content: center;
+    z-index: 9;
+    margin-top: 15vh;
+    margin-left: 15%;
+  }
+
+  .editor-pop-up-container {
+    background-image: linear-gradient(rgb(211, 197, 197), rgb(98, 101, 103));
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid black;
+    box-shadow: 0 0 40px rgb(208, 176, 245, 0.2);
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+
+.ql-toolbar {
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: left;
+}
+
+.ql-container {
+    background-color: #ffffff; 
+    height: 320px;
+    overflow-y: scroll;
+  }
+
+  .editor-pop-up-footer{
+    margin-top: 20px;
+    display: flex;
+    float: right;
+  }
+
+  .editor-pop-up-footer button{
+    margin-left: 10px;
+    width: 80px;
+  }
+
+  .editor-pop-up-header{
+    display: flex;
+    align-items: center;
+}
+
+  .editor-pop-up-profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #512DA8;
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+    /* line-height: 150px; */
+    margin: 20px 0;
+  }
+
+  .editor-pop-up-header-username{
+    margin-left: 10px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+
+.editor-pop-up-header-date{
+    margin-left: auto;
+}
+
+
+.editor-pop-up-footer i{
+  padding-left: 20px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  font-size: 18px;
+}
