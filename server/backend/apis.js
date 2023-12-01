@@ -11,16 +11,13 @@ function handleAPIs(app){
     
     app.post('/register', account.registerUser)
     app.post('/login', passport.authenticate('local'), account.loginUser)
+    
     app.get('/action-item/:id', actionItem.getActionItem)
     app.post('/action-item/:id', actionItem.updateActionItem)
-
-    // action-item/api/:id
     app.post('/action-item', actionItem.addActionItem)
-    // action-item/new
     app.get('/action-item', actionItem.getAllActionItem)
-    // action-item
+    
     app.get('/user/id', user.getUserId);
-    // user
     app.get('/user/all', user.getAllUsers);
     app.get('/user/partner', user.getAllPartners);
     app.get('/user', user.getUserDetails);
