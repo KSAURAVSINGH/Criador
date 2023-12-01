@@ -16,10 +16,11 @@ jobs:
     steps:  
       - name: Create env file
         run: |
-          touch ./server/.env
-          echo PORT=${{ secrets.PORT }} >> ./server/.env
-          echo DB_CONNECT=${{ secrets.DB_CONNECT }} >> ./server/.env
-          cat ./server/.env
+          touch .env
+          echo PORT=${{ secrets.PORT }} >> .env
+          echo DB_CONNECT=${{ secrets.DB_CONNECT }} >> .env
+          cat .env
+        
 
       - name: Export the env variables
         run: |
