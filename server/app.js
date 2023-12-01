@@ -36,7 +36,7 @@ app.use(passport.session());
 
 require('./backend/apis.js')(app);
 
-app.listen(process.end.PORT || 3000, function(){
+app.listen(process.env.PORT || 3000, function(){
     mongoConnect.makeDBConn();
     console.log("Server started");
 })
