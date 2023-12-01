@@ -41,7 +41,6 @@ function handleAPIs(app){
     // app.get('/action/collab/all', actionItem.getCollabs);
     // app.post('/action/collab/new', actionItem.addCollab);
     // app.delete('/action/collab', actionItem.removeCollab);
-    // collab
 
 }   
 
