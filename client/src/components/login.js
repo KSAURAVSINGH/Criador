@@ -14,8 +14,6 @@ function LoginComp(props) {
 
     async function handleSubmit(e){
         e.preventDefault();
-        console.log(userData);
-        alert(JSON.stringify(userData, null, 2))
 
         const headers = {
             'Content-Type': 'application/json'            
@@ -37,7 +35,6 @@ function LoginComp(props) {
         }
         catch(err){
             if(err.response.status === 401){
-                console.log("Invalid username or password");     
                 alert("Invalid username or password") 
             }
             setUserData({           
@@ -46,7 +43,6 @@ function LoginComp(props) {
             })
             console.log("Error occurred:" ,err)
         }
-        
     }
 
     function handleChange(e){
@@ -60,14 +56,7 @@ function LoginComp(props) {
     return (
         <div className='login'>   
             <HeaderComp />
-            <div className='container p-3'>
-                {/* <div className='col'>
-                    <div className='row-8 header'>
-                        <div className='col logo-space'>
-                            <Link to="/"><img src='https://as2.ftcdn.net/v2/jpg/01/16/16/21/1000_F_116162105_fzej37FR1pD8LOvbH8UQJvoBqVoTvDFQ.jpg' alt="Your Logo" /></Link>                        
-                        </div>
-                    </div>
-                </div>  */}
+            <div className='container p-3'>                
             </div>        
             <form className='login-form' onSubmit={handleSubmit}>  
                 <h3 className='login-h3'>Login Here</h3>              

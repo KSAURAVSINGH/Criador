@@ -20,19 +20,6 @@ function TableComp(props) {
         setSubmitFormStatus(!submitFormStatus);
     };
 
-    const navigate = useNavigate();
-    const actionId = 0;
-
-    function navigateToAI(){
-       
-        navigate(`/action-item/:${actionId}`)
-    }
-
-    function openAI(){
-       
-        navigate(`/action-item/:${actionId}`)
-    }
-
     useEffect(function(){
 
         try{
@@ -41,9 +28,7 @@ function TableComp(props) {
                 console.log("action item response: ", response)
                 if(response.data.success){
                     const items = response.data.body;
-                    // const reversedItems = items.reverse();
                     setData(items);
-                    // HandleClickAndSort(items, 'updatedOn');
                     setLoading(false)
                 }
                 else{
@@ -101,14 +86,9 @@ function TableComp(props) {
         } else if (typeof valueA === 'string' && typeof valueB === 'string') {
           return valueA.localeCompare(valueB);
         } else {
-          // Fallback to string comparison for mixed types
           return String(valueA).localeCompare(String(valueB));
         }
       }
-      
-    // if (data.length === 0) {
-    //     return <p>No data available</p>;
-    // }
     
     const columnConfig = [
         { databaseField: 'hitCount', displayName: 'Action ID' },

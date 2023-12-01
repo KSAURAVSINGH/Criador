@@ -16,8 +16,6 @@ function RegisterComp(props) {
 
     function handleSubmit(e){
         e.preventDefault();
-        console.log(userData);
-        // alert(JSON.stringify(userData, null, 2))
         
         axios.post("/register", { data: userData})
         .then(response=>{
@@ -47,8 +45,7 @@ function RegisterComp(props) {
                 })
             }
         })
-        .catch(err=>console.log("Error occurred: ", err))
-        
+        .catch(err=>console.log("Error occurred: ", err))        
     }
 
     function handleChange(e){
@@ -62,13 +59,7 @@ function RegisterComp(props) {
     return (
         <div className='register'>
             <HeaderComp />
-            <div className='container p-3'>
-                {/* <div className='col'>
-                    <div className='row-8 header'>
-                        <div className='col logo-space'>
-                            <Link to="/"><img src='https://as2.ftcdn.net/v2/jpg/01/16/16/21/1000_F_116162105_fzej37FR1pD8LOvbH8UQJvoBqVoTvDFQ.jpg' alt="Your Logo" /></Link>                        </div>
-                    </div>
-                </div>  */}
+            <div className='container p-3'>                
             </div>    
             <form className="reg-form" onSubmit={handleSubmit}>
                 <h3>Register</h3>   

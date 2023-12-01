@@ -1,15 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
 import '../styles/actionItemBar.css'
 
-async function getUserId(){
-    const userId = await axios.get('/user/id');
-    if(userId.data.success){
-        return userId.data.body;
-    }
-    return null;
-}
 const options = {
     year: 'numeric',
     month: 'numeric',
@@ -20,8 +12,6 @@ const options = {
 
 function ActionItemBarComp(props) {
 
-    const navigate = useNavigate();
-
     const [name, setName] = useState('');
     const [status, setStatus] = useState('');
     const [collab, setCollab] = useState('')
@@ -30,10 +20,7 @@ function ActionItemBarComp(props) {
     const [priority, setPriority] = useState('');
     const [updatedOn, setUpdatedOn] = useState('')
     const [pageRefresh, setPageRefreshStatus] = useState(true);
-
     const aiExtraParams = useRef(null);
-
-    let collaborators = [];
     const actionId = props.actionId;
 
     useEffect(function(){
@@ -48,20 +35,15 @@ function ActionItemBarComp(props) {
         })
     }, [])
 
-
     useEffect(function(){
-            
-        console.log("Inside useEffect hook to get the initial values")
-
         // fetch data of AI from backend apis
         axios.get(`/action-item/${actionId}`)
         .then(response=>{
             const data = response.data;
             
-            if(data.success){                
-                const body = data.body
-                console.log("Action item data: ", body);
+            if(data.success){         
 
+                const body = data.body
                 const aiName = body.name;
                 const aiDesc = body.desc;
                 const aiProject = body.projectName;                
@@ -87,98 +69,6 @@ function ActionItemBarComp(props) {
         })
         .catch(err=>console.log(err))        
     }, [pageRefresh])    
-
-    async function getProjects(){
-        const projects = await axios.get('/project/all');
-
-        if(projects.data.success){
-            return projects.data.body;
-        }
-        else{
-            console.log("Error occurred while fetching projects: ", projects.data.error)
-            return [];
-        }
-    }
-    
-
-    async function addProject(name){
-        const payload = {
-            name: name
-        }
-        const project = await axios.post('/project/new', payload)
-
-        if(project.data.success){
-            console.log("New project created")
-        }
-        else{
-            console.log("Failed to create new project")
-        }
-    }
-
-    async function getProjectOrCreateNew(name){
-        const project = await axios.get('/project/api/create-by-name', {params: {name: name}});
-
-        if(project.data.success){
-            return project.data.body;
-        }
-        else{
-            console.log("Error occurred while fetching projects: ", project.data.error)
-            return {};
-        }
-    }
-
-    async function getHitCount(){
-        const hitCount = await axios.get('/action/hitcount');
-        if(hitCount.data.success){
-            return hitCount.data.body;
-        }
-        else{
-            return null;
-        }
-
-    }
-
-    async function updateHitCount(){
-        const hitCount = await axios.post('/action/hitcount');
-        if(hitCount.data.success){
-            return hitCount.data.body;
-        }
-        else{
-            return hitCount.data.error;
-        }
-    }
-
-    // async function getCollabs(){
-    //     const collabs = await axios.get('/action/collab/all');
-    //     if(collabs.data.success){
-    //         return collabs.data.body;
-    //     }
-    //     else{
-    //         return [];
-    //     }
-    // }
-
-    // async function addCollab(data){
-    //     // data is the email id of the collaborator
-    //     const collab = await axios.post('/action/collab/new', data);
-    //     if(collab.data.success){
-    //         return collab.data.body;
-    //     }
-    //     else{
-    //         return collab.data.error;
-    //     }
-    // }
-
-    // async function removeCollab(data){
-    //     // data is the email id of the collaborator
-    //     const collab = await axios.delete('/action/collab', { params: { data } });
-    //     if(collab.data.success){
-    //         return collab.data.body;
-    //     }
-    //     else{
-    //         return collab.data.error;
-    //     }
-    // }
 
     function handleChangeName(e){
         const value = e.target.value;
@@ -210,15 +100,12 @@ function ActionItemBarComp(props) {
         setPriority(value);  
     }
     
-
     async function handleSubmit(e){
         
-        console.log("Inside handle submit function");
-
         e.preventDefault();
         
-        let projectDetails = await getProjectOrCreateNew(project);
-        let projectId = projectDetails._id;
+        const projectDetails = await getProjectOrCreateNew(project);
+        const projectId = projectDetails._id;
 
         const updatedValues = {
             name: name,
@@ -239,66 +126,11 @@ function ActionItemBarComp(props) {
             else{
                 console.log(response.data.error);
             }
-
             setPageRefreshStatus(!pageRefresh);
         }) 
         .catch(err=>{
-            console.error("Error occurred while updating values")
+            console.error("Error occurred while updating values: ", err)
         })
-
-        
-
-
-        if(true){
-            console.log("HI");
-        }
-        else{
-
-            if (collab.trim() !== '') {
-                // Add the new element to the state
-                collaborators = [...collaborators, collab]; 
-            }
-
-            
-    
-            let userId = await getUserId();            
-            let projectDetails = await getProjectOrCreateNew(project);
-            let projectId = projectDetails._id;
-
-            await updateHitCount();        
-            let hitCount = await getHitCount();
-
-            console.log("User id: ", userId);
-            console.log("Project id: ", projectId)
-            console.log("Hit count: ", hitCount)
-            console.log("Collaborators: ", collaborators);            
-
-            axios.post("/action-item", { data: {                
-                name: name,
-                status: status,
-                partner: collaborators,
-                projectName: project,
-                progressNote: [],
-                user: userId,
-                project: projectId,
-                role: 'admin',
-                createdOn: new Date().toLocaleDateString('en-US', options),
-                updatedOn: new Date().toLocaleDateString('en-US', options),
-                hitCount: hitCount.count
-            }})
-            .then(response=>{
-                console.log(response);
-                setName('');
-                setStatus('');
-                setCollab('');
-                setProject('');    
-                navigate('/home');                    
-
-            })
-            .catch(err=>console.log("Error occurred: ", err))
-
-            
-        }
     }
 
     return (
@@ -395,5 +227,19 @@ function ActionItemBarComp(props) {
         </div>
     );
 }
+
+async function getProjectOrCreateNew(name){
+    const project = await axios.get('/project/api/create-by-name', {params: {name: name}});
+
+    if(project.data.success){
+        return project.data.body;
+    }
+    else{
+        console.log("Error occurred while fetching projects: ", project.data.error)
+        return {};
+    }
+}
+
+
 
 export default ActionItemBarComp;

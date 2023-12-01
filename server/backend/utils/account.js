@@ -12,7 +12,6 @@ async function handlePrerequisites(userId){
     catch(err){
         console.log("Error occurred while handling pre-requisites for the new user")
     }
-
 }
 
 async function hashPassword(rawPassword) {

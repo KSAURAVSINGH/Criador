@@ -4,9 +4,12 @@ const MongoStore = require('connect-mongo');
 const mongoConnect = require('./database/db_connection.js')
 const passport = require('passport')
 const dotenv = require('dotenv')
+const path = require('path')
 
 dotenv.config()
 const app = express()
+
+app.use(express.static(path.join(__dirname+'/public')))
 
 // Parse JSON and URL-encoded request bodies
 app.use(express.json());
