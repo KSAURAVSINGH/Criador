@@ -10,15 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PORT: 3000
-      DB_CONNECT: "mongodb+srv://osmosian:8102020836@cluster0.pygkgi1.mongodb.net/?retryWrites=true&w=majority"
+      PORT: "${{ secrets.PORT }}"
+      DB_CONNECT: "${{ secrets.DB_CONNECT }}"
 
     steps:  
 
+      - name: Export the env variables
+        run: |
+          export PORT="${{ secrets.PORT }}"
+          export DB_CONNECT="${{ secrets.DB_CONNECT }}"
+
       - name: Build and deploy
         run: |
-          echo "PORT=${{env.PORT}}"
-          echo "DB_CONNECT=${{env.DB_CONNECT}}"
+          echo "PORT=${{secrets.PORT}}"
+          echo "DB_CONNECT=${{secrets.DB_CONNECT}}"
 
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -36,10 +41,7 @@ jobs:
           images: osmosian/criador           
           
       - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        env:
-          PORT: ${{ env.PORT }}
-          DB_CONNECT: ${{ env.DB_CONNECT }}
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc        
         with:
           context: ./server
           push: true
