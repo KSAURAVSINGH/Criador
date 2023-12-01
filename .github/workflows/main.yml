@@ -29,5 +29,5 @@ jobs:
         with:
           context: ./server
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: osmosian/criador:v1.0.0
           labels: ${{ steps.meta.outputs.labels }}
