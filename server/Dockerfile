@@ -2,9 +2,9 @@
 FROM node:16-alpine
 
 # Change the working directory on the Docker image to /app
-WORKDIR /usr/src/criador-app
+WORKDIR /usr/src/criador-app-server
 
-# Copy package.json and package-lock.json to the /app directory
+# Copy package.json and package-lock.json to the /criador-app-server directory
 COPY package.json package-lock.json ./
 
 # Install dependencies
@@ -18,4 +18,3 @@ EXPOSE 3000
 
 # Start the application
 CMD npm start
-

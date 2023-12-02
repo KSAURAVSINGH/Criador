@@ -4,12 +4,12 @@ const MongoStore = require('connect-mongo');
 const mongoConnect = require('./database/db_connection.js')
 const passport = require('passport')
 const dotenv = require('dotenv')
-const path = require('path')
+// const path = require('path')
 
 dotenv.config()
 const app = express()
 
-app.use(express.static(path.join(__dirname+'/public')))
+// app.use(express.static(path.join(__dirname+'/public')))
 
 // Parse JSON and URL-encoded request bodies
 app.use(express.json());
@@ -36,7 +36,7 @@ app.use(passport.session());
 
 require('./backend/apis.js')(app);
 
-app.listen(process.env.PORT || 3000, function(){
+app.listen(process.env.PORT || 3001, function(){
     mongoConnect.makeDBConn();
     console.log("Server started");
 })

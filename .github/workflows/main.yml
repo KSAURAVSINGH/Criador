@@ -9,28 +9,7 @@ jobs:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
 
-    env:
-      PORT: "${{ secrets.PORT }}"
-      DB_CONNECT: "${{ secrets.DB_CONNECT }}"
-
-    steps:  
-      - name: Create env file
-        run: |
-          touch .env
-          echo PORT=${{ secrets.PORT }} >> .env
-          echo DB_CONNECT=${{ secrets.DB_CONNECT }} >> .env
-          cat .env
-        
-
-      - name: Export the env variables
-        run: |
-          export PORT="${{ secrets.PORT }}"
-          export DB_CONNECT="${{ secrets.DB_CONNECT }}"
-
-      - name: Build and deploy
-        run: |
-          echo "PORT=${{secrets.PORT}}"
-          echo "DB_CONNECT=${{secrets.DB_CONNECT}}"
+    steps:
 
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -47,10 +26,18 @@ jobs:
         with:
           images: osmosian/criador           
           
-      - name: Build and push Docker image
+      - name: Build and push Docker image - Server
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc        
         with:
           context: ./server
           push: true
-          tags: osmosian/criador:v1.0.0
-          labels: ${{ steps.meta.outputs.labels }}        
+          tags: osmosian/criador:server-v1.0.0
+          labels: ${{ steps.meta.outputs.labels }}  
+      
+      - name: Build and push Docker image - Client
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc        
+        with:
+          context: ./client
+          push: true
+          tags: osmosian/criador:client-v1.0.0
+          labels: ${{ steps.meta.outputs.labels }}  
