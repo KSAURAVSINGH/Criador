@@ -3,6 +3,7 @@ import '../styles/textEditorPopUp.css'
 import ReactQuill from 'react-quill';
 import axios from 'axios';
 
+
 const options = {
     year: 'numeric',
     month: 'numeric',
@@ -23,11 +24,20 @@ const modules = {
 function TextEditorPopUpComp(props) {
 
     const [content, setContent] = useState('');
+    
 
     useEffect(()=>{
         setContent(props.editorContent.content);
         console.log("Content: ", content);
     },[])
+
+    async function getUserId(){
+        const userId = await axios.get('/user/id');
+        if(userId.data.success){
+            return userId.data.body;
+        }
+        return null;
+    }
 
     async function saveContentToDB(){
 
@@ -50,6 +60,7 @@ function TextEditorPopUpComp(props) {
             else{
                 console.log("Failed to add the note. Try again.");
             }
+
         }
         catch(err){
             console.error("Error occurred while adding note: ", err);
@@ -58,6 +69,7 @@ function TextEditorPopUpComp(props) {
 
     async function handleSaveClick(){
 
+        console.log("Save button is clicked")
         try{
             const pnId = props.editorContent._id;
 
@@ -66,7 +78,8 @@ function TextEditorPopUpComp(props) {
                 'updatedOn': new Date().toLocaleDateString('en-US', options)
             }
 
-            const response = await axios.post(`/progress-note/note/${pnId}`, details)              
+            const response = await axios.post(`/progress-note/note/${pnId}`, details)
+              
             if(response.data.success){
                 console.log("Progress note updated successfully");
             }         
@@ -77,32 +90,40 @@ function TextEditorPopUpComp(props) {
         catch(err){
             console.error("Error occurred while updating progress note")
         }
+
     }
     
     function handleCancelNote(){
+        // clear the content 
         setContent('');
         props.popUpDisplay();
     }
 
     async function handleSaveNote(){
 
+        // save the data to the database
         if(props.editorContent.content===''){
             await saveContentToDB();
         }
         else{
             await handleSaveClick();
-        }        
+        }
+        
         setContent(props.editorContent.content);
         props.popUpDisplay();
+
     }
 
     function handleEditorContent(e){
-       setContent(e);  
+        // const value = e.target.value;
+        console.log("Value: ",e)
+        setContent(e);  
     }
 
     function isValueChanged(){
         return content !== props.editorContent.content;
     }
+
 
     return (
         <div className='text-editor-pop-up'>
@@ -147,14 +168,6 @@ function TextEditorPopUpComp(props) {
             </div>
         </div>
     );
-}
-
-async function getUserId(){
-    const userId = await axios.get('/user/id');
-    if(userId.data.success){
-        return userId.data.body;
-    }
-    return null;
 }
 
 export default TextEditorPopUpComp;

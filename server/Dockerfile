@@ -1,5 +1,5 @@
 # Use Node 16 alpine as parent image
-FROM node:16-alpine
+FROM node:17-alpine as builder
 
 # Change the working directory on the Docker image to /app
 WORKDIR /usr/src/criador-app-server
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose application port
-EXPOSE 3001
+EXPOSE 8000
 
 # Start the application
 CMD npm start

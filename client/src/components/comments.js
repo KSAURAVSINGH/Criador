@@ -3,7 +3,9 @@ import '../styles/comments.css'
 
 function CommentsComp(props) {
 
+
     function showTextEditorPopUp(){
+        // props.editorContent();
         props.popUpDisplay();        
     }
 
@@ -19,7 +21,8 @@ function CommentsComp(props) {
                 </div>
                 <div className='row-5'>
                     <div>
-                        <div className='comment-preview' dangerouslySetInnerHTML={{__html: props.content.content}} />
+                        <div className='comment-preview' dangerouslySetInnerHTML={{__html: props.content.content}}>
+                        </div>
                     </div>
                 </div>
                 <div className='row-2 comment-footer'>        

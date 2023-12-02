@@ -1,19 +1,30 @@
-# Use Node 16 alpine as parent image
-FROM node:16-alpine
+# Fetching the latest node image on apline linux
+FROM node:17-alpine as builder
 
-# Change the working directory on the Docker image to /app
-WORKDIR /usr/src/criador-app-client
+# Declaring env
+ENV NODE_ENV development
 
-# Copy package.json and package-lock.json to the /criador-app-client directory
-COPY public/ /usr/src/criador-app-client/public
-COPY src/ /usr/src/criador-app-client/src
-COPY package.json /usr/src/criador-app-client/
+# Setting up the work directory
+WORKDIR /usr/src/criador-app-server
 
-# Install dependencies
+# Installing dependencies
+COPY ./package.json ./
 RUN npm install
 
-# Expose application port
-EXPOSE 3000
+# Copying all the files in our project
+COPY . .
 
-# Start the application
-CMD npm start
+# Building our application
+RUN npm run build
+
+# # Bundle static assets with nginx
+# FROM nginx:1.21.0-alpine as production
+# ENV NODE_ENV production
+# # Copy built assets from builder
+# COPY --from=builder /app/build /usr/share/nginx/html
+# # Add your nginx.conf
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# # Expose port
+# EXPOSE 80
+# # Start nginx
+# CMD ["nginx", "-g", "daemon off;"]

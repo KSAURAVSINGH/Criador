@@ -3,6 +3,13 @@ import '../styles/newItemWindow.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+async function getUserId(){
+    const userId = await axios.get('/user/id');
+    if(userId.data.success){
+        return userId.data.body;
+    }
+    return null;
+}
 const options = {
     year: 'numeric',
     month: 'numeric',
@@ -13,12 +20,15 @@ const options = {
 
 function NewItemWindowsComp(props) {
 
+    const navigate = useNavigate();
+
     const [name, setName] = useState('');
     const [status, setStatus] = useState('');
     const [collab, setCollab] = useState('')
     const [project, setProject] = useState('');
     const [desc, setDesc] = useState('');
     const [priority, setPriority] = useState('');
+    
     const actionId = props.actionId;
     let collaborators = [];
 
@@ -33,6 +43,7 @@ function NewItemWindowsComp(props) {
             setCollab("Unknown")
         })
     }, [])
+
 
     useEffect(function(){
         if(!actionId==="0"){
@@ -59,7 +70,99 @@ function NewItemWindowsComp(props) {
             .catch(err=>console.log(err))
         }
 
-    }, [])       
+    }, [])    
+
+    async function getProjects(){
+        const projects = await axios.get('/project/all');
+
+        if(projects.data.success){
+            return projects.data.body;
+        }
+        else{
+            console.log("Error occurred while fetching projects: ", projects.data.error)
+            return [];
+        }
+    }
+    
+
+    async function addProject(name){
+        const payload = {
+            name: name
+        }
+        const project = await axios.post('/project/new', payload)
+
+        if(project.data.success){
+            console.log("New project created")
+        }
+        else{
+            console.log("Failed to create new project")
+        }
+    }
+
+    async function getProjectOrCreateNew(name){
+        const project = await axios.get('/project/api/create-by-name', {params: {name: name}});
+
+        if(project.data.success){
+            return project.data.body;
+        }
+        else{
+            console.log("Error occurred while fetching projects: ", project.data.error)
+            return {};
+        }
+    }
+
+    async function getHitCount(){
+        const hitCount = await axios.get('/action/hitcount');
+        if(hitCount.data.success){
+            return hitCount.data.body;
+        }
+        else{
+            return null;
+        }
+
+    }
+
+    async function updateHitCount(){
+        const hitCount = await axios.post('/action/hitcount');
+        if(hitCount.data.success){
+            return hitCount.data.body;
+        }
+        else{
+            return hitCount.data.error;
+        }
+    }
+
+    // async function getCollabs(){
+    //     const collabs = await axios.get('/action/collab/all');
+    //     if(collabs.data.success){
+    //         return collabs.data.body;
+    //     }
+    //     else{
+    //         return [];
+    //     }
+    // }
+
+    // async function addCollab(data){
+    //     // data is the email id of the collaborator
+    //     const collab = await axios.post('/action/collab/new', data);
+    //     if(collab.data.success){
+    //         return collab.data.body;
+    //     }
+    //     else{
+    //         return collab.data.error;
+    //     }
+    // }
+
+    // async function removeCollab(data){
+    //     // data is the email id of the collaborator
+    //     const collab = await axios.delete('/action/collab', { params: { data } });
+    //     if(collab.data.success){
+    //         return collab.data.body;
+    //     }
+    //     else{
+    //         return collab.data.error;
+    //     }
+    // }
 
     function handleChangeName(e){
         const value = e.target.value;
@@ -231,46 +334,6 @@ function NewItemWindowsComp(props) {
             </div>
         </div>   
     );
-}
-
-async function getUserId(){
-    const userId = await axios.get('/user/id');
-    if(userId.data.success){
-        return userId.data.body;
-    }
-    return null;
-}
-
-async function getProjectOrCreateNew(name){
-    const project = await axios.get('/project/api/create-by-name', {params: {name: name}});
-
-    if(project.data.success){
-        return project.data.body;
-    }
-    else{
-        console.log("Error occurred while fetching projects: ", project.data.error)
-        return {};
-    }
-}
-
-async function getHitCount(){
-    const hitCount = await axios.get('/action/hitcount');
-    if(hitCount.data.success){
-        return hitCount.data.body;
-    }
-    else{
-        return null;
-    }
-}
-
-async function updateHitCount(){
-    const hitCount = await axios.post('/action/hitcount');
-    if(hitCount.data.success){
-        return hitCount.data.body;
-    }
-    else{
-        return hitCount.data.error;
-    }
 }
 
 export default NewItemWindowsComp;
