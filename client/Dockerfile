@@ -1,11 +1,8 @@
 # Fetching the latest node image on apline linux
 FROM node:17-alpine as builder
 
-# Declaring env
-ENV NODE_ENV development
-
 # Setting up the work directory
-WORKDIR /usr/src/criador-app-server
+WORKDIR /usr/src/criador-app-client
 
 # Installing dependencies
 COPY ./package.json ./
