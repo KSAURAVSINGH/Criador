@@ -53,4 +53,4 @@ jobs:
         with:
           context: ./client
           push: true
-          tags: supritshah1289/githubaction:latest
+          tags: osmosian/criador:client-v1.0.0
