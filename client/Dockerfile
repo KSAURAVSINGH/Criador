@@ -13,7 +13,7 @@ COPY . .
 
 # Building our application
 RUN npm run build
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
 
 # # Bundle static assets with nginx
 # FROM nginx:1.21.0-alpine as production

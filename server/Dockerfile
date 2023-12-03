@@ -1,5 +1,5 @@
 # Use Node 16 alpine as parent image
-FROM node:17-alpine as builder
+FROM node:16-alpine
 
 # Change the working directory on the Docker image to /app
 WORKDIR /usr/src/criador-app-server
