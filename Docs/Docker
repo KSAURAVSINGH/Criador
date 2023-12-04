@@ -83,3 +83,18 @@ DB_CONNECT=mongodb+srv://osmosian:8102020836@cluster0.pygkgi1.mongodb.net/?retry
 
 We need to check, which env file it is taking as we also have the root .env file in the root dir.
 
+
+-------------------------- Nginx intergration --------------------------------------------------
+
+With the current configuration, we are able to connect with the backend server.
+Extra details or commands to mention:
+
+Reference: https://www.section.io/engineering-education/build-and-dockerize-a-full-stack-react-app-with-nodejs-and-nginx/
+
+docker-compose up --build 
+This command actually runs the docker compose file and starts the containers.
+
+
+
+
+
