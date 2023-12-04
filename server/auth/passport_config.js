@@ -1,14 +1,16 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
-const bcrypt = require('bcrypt');
+const crypto = require('crypto')
 const {client} = require('../database/db_connection')
 const { ObjectId } = require('mongodb');
 
-async function verifyPassword(enteredPassword, storedHashedPassword) {
-  try {
-    const result = await bcrypt.compare(enteredPassword, storedHashedPassword);
-    return result;
-  } catch (err) {
+async function verifyPassword(enteredPassword, storedHashedPassword, salt) {
+  
+  try{
+    const hash = crypto.scryptSync(enteredPassword, salt, 64, { N: 1024 }).toString('hex');
+    return hash === storedHashedPassword;
+  }
+  catch (err) {
     // Handle any errors that occur during password verification
     throw err;
   }
@@ -28,7 +30,7 @@ async function verifyCallback(email, password, done){
             return done(null, false, { message: 'User not found' }); 
         }
         console.log("User found: ", user)
-        const isMatch = await verifyPassword(password, user.password);
+        const isMatch = await verifyPassword(password, user.password, user.salt);
         console.log("Match result: ", isMatch)
 
         if (isMatch) { 
