@@ -56,3 +56,30 @@ Facing issue with the docker image with the architecture:
 It is working, this way. Just we need to install the compatible bcrypt module to run the server. 
 uninstall and install will do the task.
 
+docker-compose-dev.yml file that is working
+
+version: '1'
+services:
+  client:
+    container_name: criador-client
+    image: osmosian/criador:client-v1.0.0
+    build:
+      context: ./Criador/client
+    ports:
+      - "3000:3000"
+  server:
+    container_name: criador-server
+    image: osmosian/criador:server-v1.0.0
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./config/app.config
+
+config/app.config - Acting as a env file here, which we are taking the value from
+
+#MY_ENV=development
+PORT=8000
+DB_CONNECT=mongodb+srv://osmosian:8102020836@cluster0.pygkgi1.mongodb.net/?retryWrites=true&w=majority
+
+We need to check, which env file it is taking as we also have the root .env file in the root dir.
+
