@@ -9,7 +9,7 @@ username - ksauravsingh
 git remote set-url origin https://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@github.com/KSAURAVSINGH/Criador 
 
 
-docker-compose -f docker-compose.dev.yml up 
+docker-compose -f docker-compose-dev.yml up 
 
 to build the image: docker build -t react-image:v1.0.0 -f ./Dockerfile . 
 
@@ -93,6 +93,54 @@ Reference: https://www.section.io/engineering-education/build-and-dockerize-a-fu
 
 docker-compose up --build 
 This command actually runs the docker compose file and starts the containers.
+
+
+Creating a docker-compose-dev.yml and config folder with app.config file inside the projects folder where we hav the Criador repo, is working fine.
+
+docker-compose-dev.yml - docker-compose -f docker-compose-dev.yml up 
+
+version: '3.8'
+
+services:
+
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./Criador/nginx
+    ports:
+      - "3050:80"
+
+  api:
+    container_name: criador-api
+    build:
+      dockerfile: Dockerfile
+      context: "./Criador/server"
+    volumes:
+      - /app/node_modules
+      - ./Criador/server:/app
+    env_file:
+      - ./config/app.config
+    
+  client:
+    container_name: criador-react
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile
+      context: ./Criador/client
+    volumes:
+      - /app/node_modules
+      - ./Criador/client:/app
+
+
+./config/app.config
+
+#MY_ENV=development
+PORT=8000
+DB_CONNECT=mongodb+srv://osmosian:8102020836@cluster0.pygkgi1.mongodb.net/?retryWrites=true&w=majority
 
 
 
