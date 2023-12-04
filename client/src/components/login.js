@@ -23,7 +23,7 @@ function LoginComp(props) {
         
         try{
             // navigate to home component
-            let response = await axios.post('/login', userData, {headers});            
+            let response = await axios.post('/api/login', userData, {headers});            
             setUserData({           
                 email: '',         
                 password: ''

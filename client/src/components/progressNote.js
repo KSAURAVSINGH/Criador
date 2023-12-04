@@ -20,7 +20,7 @@ function ProgressNoteComp(props) {
     useEffect(()=>{
 
         console.log("Fetching updated progress notes");
-        axios.get(`/progress-note/action/${props.actionId}`)
+        axios.get(`/api/progress-note/action/${props.actionId}`)
         .then(response=>{
             if(response.data.success){
                 setSavedContent(response.data.body);
@@ -35,7 +35,7 @@ function ProgressNoteComp(props) {
     },[changeAppeared])
 
     useEffect(()=>{
-        axios.get('/user')
+        axios.get('/api/user')
         .then(user=>{
             if(user.data.success){
                 setUserDetails(user.data.body);

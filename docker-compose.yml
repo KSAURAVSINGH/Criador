@@ -26,7 +26,7 @@ services:
       - DB_CONNECT="mongodb+srv://osmosian:8102020836@cluster0.pygkgi1.mongodb.net/?retryWrites=true&w=majority"
 
   client:
-    container_name: criador-client
+    container_name: criador-react
     stdin_open: true
     build:
       dockerfile: Dockerfile
