@@ -19,7 +19,7 @@ function RegisterComp(props) {
         console.log(userData);
         // alert(JSON.stringify(userData, null, 2))
         
-        axios.post("/register", { data: userData})
+        axios.post("/api/register", { data: userData})
         .then(response=>{
             console.log(response);
             return response.data;
