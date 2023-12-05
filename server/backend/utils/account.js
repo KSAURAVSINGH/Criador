@@ -43,7 +43,7 @@ async function registerUser(req, res){
     console.log("Body: ",body);
     
     const salt = crypto.randomBytes(16).toString('hex');
-    const hashedPassword = hashPassword(password, salt);
+    const hashedPassword = hashPassword(data.password, salt);
 
 
     // all fields are required as configured in frontend
