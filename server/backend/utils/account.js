@@ -1,6 +1,6 @@
 const {client} = require('../../database/db_connection')
 const userF = require('./user.js');
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const saltRounds = 10;
 
 async function handlePrerequisites(userId){
@@ -14,10 +14,10 @@ async function handlePrerequisites(userId){
     }
 }
 
-async function hashPassword(rawPassword) {
+function hashPassword(rawPassword, salt) {
     try {
-      const hashedPassword = await bcrypt.hash(rawPassword, saltRounds);
-      return hashedPassword;
+        const hash = crypto.scryptSync(rawPassword, salt, 64, { N: 1024 }).toString('hex');
+        return hash;
     } catch (err) {
       // Handle any errors that occur during hashing
       throw err;
@@ -42,14 +42,18 @@ async function registerUser(req, res){
 
     console.log("Body: ",body);
     
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hashedPassword = hashPassword(data.password, salt);
+
+
     // all fields are required as configured in frontend
     let userDetail = {
         firstname: data.firstname,
         lastname: data.lastname,
         email: data.email,
-        password: data.password
+        password: hashedPassword,
+        salt: salt
     }
-    userDetail.password = await hashPassword(userDetail.password) 
 
     const accounts = client.db('Criador_DB').collection('accounts');
     try{

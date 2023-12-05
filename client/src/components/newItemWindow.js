@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 async function getUserId(){
-    const userId = await axios.get('/user/id');
+    const userId = await axios.get('/api/user/id');
     if(userId.data.success){
         return userId.data.body;
     }
@@ -33,7 +33,7 @@ function NewItemWindowsComp(props) {
     let collaborators = [];
 
     useEffect(function(){
-        axios.get('/user')
+        axios.get('/api/user')
         .then(response=>{
             if(response.data.body){
                 setCollab(response.data.body.email);
@@ -49,7 +49,7 @@ function NewItemWindowsComp(props) {
         if(!actionId==="0"){
             
             // fetch data of AI from backend apis
-            axios.get(`/action-item/${actionId}`)
+            axios.get(`/api/action-item/${actionId}`)
             .then(response=>{
                 const data = response.data;
                 console.log("Data: ", data)
@@ -73,7 +73,7 @@ function NewItemWindowsComp(props) {
     }, [])    
 
     async function getProjects(){
-        const projects = await axios.get('/project/all');
+        const projects = await axios.get('/api/project/all');
 
         if(projects.data.success){
             return projects.data.body;
@@ -89,7 +89,7 @@ function NewItemWindowsComp(props) {
         const payload = {
             name: name
         }
-        const project = await axios.post('/project/new', payload)
+        const project = await axios.post('/api/project/new', payload)
 
         if(project.data.success){
             console.log("New project created")
@@ -100,7 +100,7 @@ function NewItemWindowsComp(props) {
     }
 
     async function getProjectOrCreateNew(name){
-        const project = await axios.get('/project/api/create-by-name', {params: {name: name}});
+        const project = await axios.get('/api/project/api/create-by-name', {params: {name: name}});
 
         if(project.data.success){
             return project.data.body;
@@ -112,7 +112,7 @@ function NewItemWindowsComp(props) {
     }
 
     async function getHitCount(){
-        const hitCount = await axios.get('/action/hitcount');
+        const hitCount = await axios.get('/api/action/hitcount');
         if(hitCount.data.success){
             return hitCount.data.body;
         }
@@ -123,7 +123,7 @@ function NewItemWindowsComp(props) {
     }
 
     async function updateHitCount(){
-        const hitCount = await axios.post('/action/hitcount');
+        const hitCount = await axios.post('/api/action/hitcount');
         if(hitCount.data.success){
             return hitCount.data.body;
         }
@@ -219,7 +219,7 @@ function NewItemWindowsComp(props) {
         console.log("Hit count: ", hitCount)
         console.log("Collaborators: ", collaborators);            
 
-        axios.post("/action-item", { data: {                
+        axios.post("/api/action-item", { data: {                
             name: name,
             desc: desc,
             status: status,

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/actionItemBar.css'
 
 async function getUserId(){
-    const userId = await axios.get('/user/id');
+    const userId = await axios.get('/api/user/id');
     if(userId.data.success){
         return userId.data.body;
     }
@@ -37,7 +37,7 @@ function ActionItemBarComp(props) {
     const actionId = props.actionId;
 
     useEffect(function(){
-        axios.get('/user')
+        axios.get('/api/user')
         .then(response=>{
             if(response.data.body){
                 setCollab(response.data.body.email);
@@ -54,7 +54,7 @@ function ActionItemBarComp(props) {
         console.log("Inside useEffect hook to get the initial values")
 
         // fetch data of AI from backend apis
-        axios.get(`/action-item/${actionId}`)
+        axios.get(`/api/action-item/${actionId}`)
         .then(response=>{
             const data = response.data;
             
@@ -89,7 +89,7 @@ function ActionItemBarComp(props) {
     }, [pageRefresh])    
 
     async function getProjects(){
-        const projects = await axios.get('/project/all');
+        const projects = await axios.get('/api/project/all');
 
         if(projects.data.success){
             return projects.data.body;
@@ -105,7 +105,7 @@ function ActionItemBarComp(props) {
         const payload = {
             name: name
         }
-        const project = await axios.post('/project/new', payload)
+        const project = await axios.post('/api/project/new', payload)
 
         if(project.data.success){
             console.log("New project created")
@@ -116,7 +116,7 @@ function ActionItemBarComp(props) {
     }
 
     async function getProjectOrCreateNew(name){
-        const project = await axios.get('/project/api/create-by-name', {params: {name: name}});
+        const project = await axios.get('/api/project/api/create-by-name', {params: {name: name}});
 
         if(project.data.success){
             return project.data.body;
@@ -128,7 +128,7 @@ function ActionItemBarComp(props) {
     }
 
     async function getHitCount(){
-        const hitCount = await axios.get('/action/hitcount');
+        const hitCount = await axios.get('/api/action/hitcount');
         if(hitCount.data.success){
             return hitCount.data.body;
         }
@@ -139,7 +139,7 @@ function ActionItemBarComp(props) {
     }
 
     async function updateHitCount(){
-        const hitCount = await axios.post('/action/hitcount');
+        const hitCount = await axios.post('/api/action/hitcount');
         if(hitCount.data.success){
             return hitCount.data.body;
         }
@@ -149,7 +149,7 @@ function ActionItemBarComp(props) {
     }
 
     // async function getCollabs(){
-    //     const collabs = await axios.get('/action/collab/all');
+    //     const collabs = await axios.get('/api/action/collab/all');
     //     if(collabs.data.success){
     //         return collabs.data.body;
     //     }
@@ -160,7 +160,7 @@ function ActionItemBarComp(props) {
 
     // async function addCollab(data){
     //     // data is the email id of the collaborator
-    //     const collab = await axios.post('/action/collab/new', data);
+    //     const collab = await axios.post('/api/action/collab/new', data);
     //     if(collab.data.success){
     //         return collab.data.body;
     //     }
@@ -231,7 +231,7 @@ function ActionItemBarComp(props) {
         };
 
         // Updating the current action id with the new values
-        axios.post(`/action-item/${actionId}`, updatedValues)
+        axios.post(`/api/action-item/${actionId}`, updatedValues)
         .then(response=>{
             if(response.data.success){
                 console.log(response.data.body);
@@ -273,7 +273,7 @@ function ActionItemBarComp(props) {
             console.log("Hit count: ", hitCount)
             console.log("Collaborators: ", collaborators);            
 
-            axios.post("/action-item", { data: {                
+            axios.post("/api/action-item", { data: {                
                 name: name,
                 status: status,
                 partner: collaborators,

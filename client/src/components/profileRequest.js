@@ -4,7 +4,7 @@ import React from 'react';
 function ProfileRequestComp(props) {
 
     async function getAllPartners(){
-        const partners = await axios.get('/user/partner')
+        const partners = await axios.get('/api/user/partner')
         if(partners.data.success){
             return partners.data.body;
         }
@@ -12,7 +12,7 @@ function ProfileRequestComp(props) {
     }
     
     async function getAllSentPendingConn(){
-        const requestList = await axios.get('/request/sent/user')
+        const requestList = await axios.get('/api/request/sent/user')
         if(requestList.data.success){
             return requestList.data.body;
         }
@@ -20,7 +20,7 @@ function ProfileRequestComp(props) {
     }
 
     async function getAllReceivedPendingConn(){
-        const requestList = await axios.get('/request/received/user')
+        const requestList = await axios.get('/api/request/received/user')
         if(requestList.data.success){
             return requestList.data.body;
         }
@@ -28,7 +28,7 @@ function ProfileRequestComp(props) {
     }
 
     async function acceptRequest(data){
-        const response = await axios.post('/request/accept', data);
+        const response = await axios.post('/api/request/accept', data);
         if(response.data.success){
             return response.data.body;
         }
@@ -37,7 +37,7 @@ function ProfileRequestComp(props) {
     }
 
     async function cancelRequest(data){
-        const response = await axios.post('/request/cancel', data);
+        const response = await axios.post('/api/request/cancel', data);
         if(response.data.success){
             return response.data.body;
         }

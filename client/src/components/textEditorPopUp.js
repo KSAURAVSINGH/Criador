@@ -32,7 +32,7 @@ function TextEditorPopUpComp(props) {
     },[])
 
     async function getUserId(){
-        const userId = await axios.get('/user/id');
+        const userId = await axios.get('/api/user/id');
         if(userId.data.success){
             return userId.data.body;
         }
@@ -53,7 +53,7 @@ function TextEditorPopUpComp(props) {
                 createdOn: new Date().toLocaleDateString('en-US', options)
             }
 
-            const response = await axios.post('/progress-note', details);
+            const response = await axios.post('/api/progress-note', details);
             if(response.data.success){
                 console.log("Note has been successfully added");                
             }
@@ -78,7 +78,7 @@ function TextEditorPopUpComp(props) {
                 'updatedOn': new Date().toLocaleDateString('en-US', options)
             }
 
-            const response = await axios.post(`/progress-note/note/${pnId}`, details)
+            const response = await axios.post(`/api/progress-note/note/${pnId}`, details)
               
             if(response.data.success){
                 console.log("Progress note updated successfully");

@@ -6,7 +6,7 @@ function SearchUsersComp(props) {
     const [renderedContent, setRenderedContent] = useState(null);
 
     async function getAllUsers(){
-        const users = await axios.get('/user/all');
+        const users = await axios.get('/api/user/all');
 
         if(users.data.success){
             return users.data.body;
@@ -16,7 +16,7 @@ function SearchUsersComp(props) {
     }
 
     async function getUserId(){
-        const userId = await axios.get('/user/id');
+        const userId = await axios.get('/api/user/id');
         if(userId.data.success){
             return userId.data.body;
         }
@@ -24,7 +24,7 @@ function SearchUsersComp(props) {
     }
 
     async function addConnection(data){
-        const response = await axios.post('/request/add', data);
+        const response = await axios.post('/api/request/add', data);
         if(response.data.success){
             return response.data.body;
         }

@@ -9,7 +9,7 @@ username - ksauravsingh
 git remote set-url origin https://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@github.com/KSAURAVSINGH/Criador 
 
 
-docker-compose -f docker-compose.dev.yml up 
+docker-compose -f docker-compose-dev.yml up 
 
 to build the image: docker build -t react-image:v1.0.0 -f ./Dockerfile . 
 
@@ -55,4 +55,94 @@ Facing issue with the docker image with the architecture:
 
 It is working, this way. Just we need to install the compatible bcrypt module to run the server. 
 uninstall and install will do the task.
+
+docker-compose-dev.yml file that is working
+
+version: '1'
+services:
+  client:
+    container_name: criador-client
+    image: osmosian/criador:client-v1.0.0
+    build:
+      context: ./Criador/client
+    ports:
+      - "3000:3000"
+  server:
+    container_name: criador-server
+    image: osmosian/criador:server-v1.0.0
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./config/app.config
+
+config/app.config - Acting as a env file here, which we are taking the value from
+
+#MY_ENV=development
+PORT=8000
+DB_CONNECT=mongodb+srv://osmosian:8102020836@cluster0.pygkgi1.mongodb.net/?retryWrites=true&w=majority
+
+We need to check, which env file it is taking as we also have the root .env file in the root dir.
+
+
+-------------------------- Nginx intergration --------------------------------------------------
+
+With the current configuration, we are able to connect with the backend server.
+Extra details or commands to mention:
+
+Reference: https://www.section.io/engineering-education/build-and-dockerize-a-full-stack-react-app-with-nodejs-and-nginx/
+
+docker-compose up --build 
+This command actually runs the docker compose file and starts the containers.
+
+
+Creating a docker-compose-dev.yml and config folder with app.config file inside the projects folder where we hav the Criador repo, is working fine.
+
+docker-compose-dev.yml -> docker-compose -f docker-compose-dev.yml up --build
+
+version: '3.8'
+
+services:
+
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./Criador/nginx
+    ports:
+      - "3050:80"
+
+  api:
+    container_name: criador-api
+    build:
+      dockerfile: Dockerfile
+      context: "./Criador/server"
+    volumes:
+      - /app/node_modules
+      - ./Criador/server:/app
+    env_file:
+      - ./config/app.config
+    
+  client:
+    container_name: criador-react
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile
+      context: ./Criador/client
+    volumes:
+      - /app/node_modules
+      - ./Criador/client:/app
+
+
+./config/app.config
+
+#MY_ENV=development
+PORT=8000
+DB_CONNECT=mongodb+srv://osmosian:8102020836@cluster0.pygkgi1.mongodb.net/?retryWrites=true&w=majority
+
+
+
+
 

@@ -36,7 +36,7 @@ function TableComp(props) {
     useEffect(function(){
 
         try{
-            axios.get('/action-item')
+            axios.get('/api/action-item')
             .then(response=>{
                 console.log("action item response: ", response)
                 if(response.data.success){
