@@ -2,8 +2,8 @@
 
 GIT_TOKEN - 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 
 
-push token - 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 
-
+push token - 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
+latest push token - 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
 username - ksauravsingh 
 
 git remote set-url origin https://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@github.com/KSAURAVSINGH/Criador 
@@ -97,7 +97,7 @@ This command actually runs the docker compose file and starts the containers.
 
 Creating a docker-compose-dev.yml and config folder with app.config file inside the projects folder where we hav the Criador repo, is working fine.
 
-docker-compose-dev.yml -> docker-compose -f docker-compose-dev.yml up --build
+docker-compose-dev.yml -> docker-compose -f docker-compose-dev.yml up --build -d
 
 version: '3.8'
 
