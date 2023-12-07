@@ -27,22 +27,22 @@ function TextEditorPopUpComp(props) {
     
     useEffect(()=>{
         setContent(props.editorContent.content);
-        console.log("Content: ", content);
     },[])
 
-    async function getUserId(){
-        const userId = await axios.get('/api/user/id');
-        if(userId.data.success){
-            return userId.data.body;
-        }
-        return null;
-    }
+    // async function getUserId(){
+    //     const userId = await axios.get('/api/user/id');
+    //     if(userId.data.success){
+    //         return userId.data.body;
+    //     }
+    //     return null;
+    // }
 
     async function saveContentToDB(){
 
         try{
-            const userId = await getUserId();
+            // const userId = await getUserId();
             const actionId = props.actionId;
+            const userId = props.user._id;
 
             const details = {
                 content: content,

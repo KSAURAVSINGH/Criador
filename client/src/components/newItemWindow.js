@@ -18,7 +18,6 @@ function NewItemWindowsComp(props) {
     const [project, setProject] = useState('');
     const [desc, setDesc] = useState('');
     const [priority, setPriority] = useState('');
-    const actionId = props.actionId;
     let collaborators = [];
 
     useEffect(function(){
@@ -31,34 +30,7 @@ function NewItemWindowsComp(props) {
         .catch(err=>{
             setCollab("Unknown")
         })
-    }, [])
-
-    useEffect(function(){
-        if(!actionId==="0"){
-            
-            // fetch data of AI from backend apis
-            axios.get(`/api/action-item/${actionId}`)
-            .then(response=>{
-                const data = response.data;
-                console.log("Data: ", data)
-                if(data.success){
-                    const body = data.body
-                    
-                    const aiName = body.name;
-                    const aiStatus = body.status;
-                    const aiCollab = body.collab;
-                    const aiProject = body.projectName;
-
-                    setName(aiName);
-                    setStatus(aiStatus);
-                    setCollab(aiCollab);
-                    setProject(aiProject);
-                }
-            })
-            .catch(err=>console.log(err))
-        }
-
-    }, [])       
+    }, [])    
 
     function handleChangeName(e){
         const value = e.target.value;

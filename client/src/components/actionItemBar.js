@@ -27,22 +27,10 @@ function ActionItemBarComp(props) {
 
     const aiExtraParams = useRef(null);    
     const actionId = props.actionId;
-    
-    useEffect(function(){
-        axios.get('/api/user')
-        .then(response=>{
-            if(response.data.body){
-                setCollab(response.data.body.email);
-            }
-        })
-        .catch(err=>{
-            setCollab("Unknown")
-        })
-    }, [])
-
 
     useEffect(function(){
             
+        console.log("Action item api calling")
         // fetch data of AI from backend apis
         axios.get(`/api/action-item/${actionId}`)
         .then(response=>{
@@ -55,13 +43,13 @@ function ActionItemBarComp(props) {
                 const aiName = body.name;
                 const aiDesc = body.desc;
                 const aiProject = body.projectName;                
-                const aiCollab = body.collab;
+                const aiCollab = body.partner;
                 const aiStatus = body.status;
                 const aiPriority = body.priority;
                 const aiUpdatedOn = body.updatedOn;
                 aiExtraParams.createdOn = body.createdOn;
                 aiExtraParams.updatedOn = body.updatedOn;
-                aiExtraParams.actionItemNum = body.hitCount;                                
+                aiExtraParams.actionItemNum = body.hitCount; 
 
                 setName(aiName);
                 setDesc(aiDesc);                                
@@ -76,7 +64,7 @@ function ActionItemBarComp(props) {
             }
         })
         .catch(err=>console.error("Error occurred while fetching action items: ", err))        
-    }, [pageRefresh])    
+    }, [pageRefresh, actionId])    
     
     function handleChangeName(e){
         const value = e.target.value;
@@ -88,10 +76,10 @@ function ActionItemBarComp(props) {
         setStatus(value);     
     }
 
-    function handleChangeAssign(e){
-        const value = e.target.value;
-        setCollab(value);  
-    }
+    // function handleChangeAssign(e){
+    //     const value = e.target.value;
+    //     setCollab(value);  
+    // }
 
     function handleChangeProject(e){
         const value = e.target.value;
@@ -210,7 +198,6 @@ function ActionItemBarComp(props) {
                                 <div className='action-item-status'>
                                     <label htmlFor="aistatus">Status</label>
                                     <select id="aistatus" name='aistatus' value={status} onChange={handleChangeStatus} required>
-                                        <option value="">{status}</option>
                                         <option value="Active">Active</option>
                                         <option value="On Hold">On Hold</option>
                                         <option value="Completed">Completed</option> 
@@ -242,7 +229,7 @@ function ActionItemBarComp(props) {
                                         id="aicollab"
                                         name="aicollab"
                                         value={collab}
-                                        onChange={handleChangeAssign}
+                                        // onChange={handleChangeAssign}
                                         readOnly={true}
                                         required
                                         disabled
@@ -251,7 +238,7 @@ function ActionItemBarComp(props) {
                                 <div className='action-item-priority'>
                                     <label htmlFor="aipriority">Priority</label>
                                     <select id="aipriority" name='aipriority' value={priority} onChange={handleChangePriority} required>
-                                        <option value="">{priority}</option>
+                                        {/* <option value="">{priority}</option> */}
                                         <option value="High">High</option>
                                         <option value="Medium">Medium</option>
                                         <option value="Low">Low</option>                                              

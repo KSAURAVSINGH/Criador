@@ -12,7 +12,7 @@ function getActionItem(req, res){
         
         actionItem
         .then(response=>{
-            console.log("Fetching action item of user ", req.user.email)
+            console.log("Fetching action item of user", req.user.email)
             if(response){
                 res.json({
                     success: true,

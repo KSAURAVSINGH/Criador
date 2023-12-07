@@ -8,7 +8,7 @@ import TextEditorPopUpComp from './textEditorPopUp';
 function ProgressNoteComp(props) {
 
     const [savedContent, setSavedContent] = useState([]);
-    const [userDetails, setUserDetails] = useState({});
+    // const [userDetails, setUserDetails] = useState({});
     const [showPopUp, setShowPopup] = useState(false);
     const [changeAppeared, setChangeAppeared] = useState(false);
     const [editContent,setEditContent] = useState({
@@ -31,18 +31,18 @@ function ProgressNoteComp(props) {
         })
     },[changeAppeared])
 
-    useEffect(()=>{
-        axios.get('/api/user')
-        .then(user=>{
-            if(user.data.success){
-                setUserDetails(user.data.body);
-            }
-            else{
-                console.error(user.data.error)
-            }
-        })
-        .catch(err=>console.log("Error occurred while fetching user details"))
-    },[userDetails])
+    // useEffect(()=>{
+    //     axios.get('/api/user')
+    //     .then(user=>{
+    //         if(user.data.success){
+    //             setUserDetails(user.data.body);
+    //         }
+    //         else{
+    //             console.error(user.data.error)
+    //         }
+    //     })
+    //     .catch(err=>console.log("Error occurred while fetching user details"))
+    // },[])
 
     function handleEditorContent(data){
         setEditContent(data);
@@ -67,7 +67,7 @@ function ProgressNoteComp(props) {
   return (
     <div className='progress-note'>
         <div>
-            {showPopUp && <TextEditorPopUpComp popUpDisplay={handlePopUpDisplay} editorContent={editContent} user={userDetails} actionId={props.actionId}/> }
+            {showPopUp && <TextEditorPopUpComp popUpDisplay={handlePopUpDisplay} editorContent={editContent} user={props.userDetails} actionId={props.actionId}/> }
         </div>
         <div className='pn-addnew-button-container'>
             <button onClick={handleNewUpdate} className='pn-addnew-button'>Add New Update</button>
@@ -75,7 +75,7 @@ function ProgressNoteComp(props) {
         {
             savedContent.map((data,index)=>(
                 <div key={index}>   
-                    <CommentsComp content={data} user={userDetails} popUpDisplay={()=>handleEditorContent(data)}/>
+                    <CommentsComp content={data} user={props.userDetails} popUpDisplay={()=>handleEditorContent(data)}/>
                 </div>                
             ))
         }        

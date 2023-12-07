@@ -19,7 +19,6 @@ function handleAPIs(app){
     app.post('/api/action-item', verifyApi, actionItem.addActionItem)
     app.get('/api/action-item', verifyApi, actionItem.getAllActionItem)
     
-    
     app.get('/api/user/id', verifyApi, user.getUserId);
     app.get('/api/user/all', verifyApi, user.getAllUsers);
     app.get('/api/user/partner', verifyApi, user.getAllPartners);
