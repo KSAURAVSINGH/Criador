@@ -30,7 +30,6 @@ function ActionItemBarComp(props) {
 
     useEffect(function(){
             
-        console.log("Action item api calling")
         // fetch data of AI from backend apis
         axios.get(`/api/action-item/${actionId}`)
         .then(response=>{

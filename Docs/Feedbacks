@@ -22,3 +22,5 @@ Feedback executed:
 6. Cleaning irrelevant variables and consoles
 7. Added delete feature for action item
 8. Change the alignment for elements in home for actionitems
+10. Fixed react hooks twice triggering error
+11. 

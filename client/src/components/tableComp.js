@@ -30,7 +30,6 @@ function TableComp(props) {
     };
 
     useEffect(function(){
-        console.log("Checking run times")
         try{
             axios.get('/api/action-item')
             .then(response=>{
