@@ -2,17 +2,17 @@ const { ObjectId } = require('mongodb');
 const {client} = require('../../database/db_connection')
 
 function getActionItem(req, res){
-
-    let actionItemID = req.params.id;
-    actionItemID = new ObjectId(actionItemID);
     
     try{
+        let actionItemID = req.params.id;
+        actionItemID = new ObjectId(actionItemID);
+
         const actionItemsColl = client.db('Criador_DB').collection('action_items');
         const actionItem = actionItemsColl.findOne({"_id": actionItemID});
         
         actionItem
         .then(response=>{
-            console.log("ActionItem: ", response);
+            console.log("Fetching action item of user ", req.user.email)
             if(response){
                 res.json({
                     success: true,
@@ -30,7 +30,7 @@ function getActionItem(req, res){
             }
         })
         .catch(err=>{
-            console.log("Error occured while fetching action item: ", err)
+            console.error("Failed to fetch action item: ", err)
             res.json({
                 success: false,
                 status: 500,
@@ -39,7 +39,44 @@ function getActionItem(req, res){
         })
     }
     catch(err){
-        console.log("Error occurred while fetching action item: ", err);
+        console.error("Error occurred while fetching action item: ", err);
+        res.json({
+            success: false,
+            status: 502,
+            error: err
+        })
+    }
+}
+
+async function deleteActionItem(req, res){
+
+    try{
+        let actionItemID = req.params.id;
+        actionItemID = new ObjectId(actionItemID);
+
+        const actionItemsColl = client.db('Criador_DB').collection('action_items');
+        const actionItem = actionItemsColl.deleteOne({"_id": actionItemID});
+        
+        actionItem
+        .then(response=>{
+            console.log("Action item deleted")
+            res.json({
+                success: true,
+                status: 200,
+                body: response
+            })
+        })
+        .catch(err=>{
+            console.error("Failed to delete action item: ", err)
+            res.json({
+                success: false,
+                status: 400,
+                error: err
+            })
+        })
+    }
+    catch(err){
+        console.error("Error occurred while deleting action item: ", err);
         res.json({
             success: false,
             status: 502,
@@ -52,25 +89,19 @@ async function updateActionItem(req, res){
     
     try{
 
-        console.log("Inside updating acting action item");
         let actionItemID = req.params.id;
         actionItemID = new ObjectId(actionItemID);
 
         let body = req.body;
-
         const update = {
             $set: body
         };
 
-        console.log("actionitemId", actionItemID);
-        console.log("updatedata", update);
-
         const actionItemsColl = client.db('Criador_DB').collection('action_items');
         const actionItem = await actionItemsColl.updateOne({"_id": actionItemID}, update);
 
-        console.log("actionitem response", actionItem);
-
         if(actionItem){
+            console.log("Action item updated with action id ", actionItemID)
             res.json({
                 success: true,
                 status: 200,
@@ -78,16 +109,16 @@ async function updateActionItem(req, res){
             })
         }
         else{
+            console.error("Failed to update action item")
             res.json({
                 success: false,
                 status: 400,
                 error: "Failed to update action item"
             })
         }
-
     }
     catch(err){
-        console.log("Error occurred while updating action item: ", err);
+        console.error("Error occurred while updating action item: ", err);
         return res.json({
             success: false,
             status: 500,
@@ -99,17 +130,14 @@ async function updateActionItem(req, res){
 
 async function addActionItem(req,res){
 
-    const body = req.body;
-    const data = body.data;
-
-    console.log("Data received from add action item: ", data);
-
     try{
+        const body = req.body;
+        const data = body.data;
         const actionItemsColl = client.db('Criador_DB').collection('action_items');
         const actionItem = await actionItemsColl.insertOne(data);
         
-        console.log("Action item added: ", actionItem);
         if(actionItem){
+            console.log("New action item added by ", req.user.email)
             res.json({
                 success: true,
                 status: 201,
@@ -117,6 +145,7 @@ async function addActionItem(req,res){
             })
         }
         else{
+            console.error("Failed to add new action item by ", req.user.email)
             res.json({
                 success: false,
                 status: 400,
@@ -126,7 +155,7 @@ async function addActionItem(req,res){
 
     }
     catch(err){
-        console.log("Error occurred while creating action item: ", err);
+        console.error("Error occurred while creating action item: ", err);
         return res.json({
             success: false,
             status: 500,
@@ -138,21 +167,18 @@ async function addActionItem(req,res){
 
 function getAllActionItem(req, res){
 
-    const user = req.user;
-    const userId = user._id.toString();
-    console.log("Get user ID: ", userId)
-
     try{
+        const user = req.user;
+        const userId = user._id.toString();
         const actionItemsColl = client.db('Criador_DB').collection('action_items');
         const actionItemsCursor = actionItemsColl.find({user: userId});
         
         const actionItems = actionItemsCursor.toArray();
 
-        console.log("Inside get all actions")
         actionItems
         .then(response=>{
             const sortedResponse = response.sort((a,b)=>new Date(b.updatedOn)-new Date(a.updatedOn));
-            console.log("All action items: ", response)
+            console.log("Fetching all action items for user", user.email)
             if(response){
                 res.json({
                     success: true,
@@ -161,8 +187,7 @@ function getAllActionItem(req, res){
                 })
             }
             else{
-                console.log("All action items: ", response)
-                console.log("No action item found")
+                console.log("No action item present")
                 res.json({
                     success: false,
                     status: 404,
@@ -171,7 +196,7 @@ function getAllActionItem(req, res){
             }
         })
         .catch(err=>{
-            console.log("Error occured while fetching action item: ", err)
+            console.error("Failed to fetch action items for user ", user.email)
             res.json({
                 success: false,
                 status: 500,
@@ -180,59 +205,7 @@ function getAllActionItem(req, res){
         })
     }
     catch(err){
-        console.log("Error occurred while fetching all action items: ", err);
-        res.json({
-            success: false,
-            status: 502,
-            error: err
-        })
-    }
-
-}
-
-function generateActionID(req, res){
-
-    const userId = req.user._id.toString();
-    console.log("Get user ID: ", userId)
-
-    try{
-        const actionItemsColl = client.db('Criador_DB').collection('action_items');
-        const actionItemCursor = actionItemsColl.find({ userId: userId }).sort({ createdOn: -1 }).limit(1);
-        
-        const actionItem = actionItemCursor.toArray();
-
-        console.log("Inside get all actions", actionItem)
-        actionItem
-        .then(response=>{
-            console.log("All action items: ", response)
-            if(response){
-                const actionId = response[0].actionId + 1;
-                res.json({
-                    success: true,
-                    status: 200,
-                    body: actionId
-                })
-            }
-            else{                
-                console.log("No action item found")
-                res.json({
-                    success: true,
-                    status: 200,
-                    body: 'AI01'
-                })
-            }
-        })
-        .catch(err=>{
-            console.log("Error occured while fetching action item: ", err)
-            res.json({
-                success: false,
-                status: 500,
-                error: err
-            })
-        })
-    }
-    catch(err){
-        console.log("Error occurred while fetching all action items: ", err);
+        console.error("Error occurred while fetching all action items: ", err);
         res.json({
             success: false,
             status: 502,
@@ -243,12 +216,11 @@ function generateActionID(req, res){
 
 async function updateHitCount(req, res){
 
-    const user = req.user;
-    const userId = user._id.toString();
-
-    const updateOperation = { $inc: { count: 1 } };
-
     try{
+        const user = req.user;
+        const userId = user._id.toString();
+
+        const updateOperation = { $inc: { count: 1 } };
         const userApiHitColl = client.db('Criador_DB').collection('user_action_api_rel');
         const userHitData = await userApiHitColl.findOne({ user: userId })
 
@@ -292,7 +264,7 @@ async function updateHitCount(req, res){
         
     }
     catch(err){
-        console.log("Failed to update hit count: ", err);
+        console.error("Failed to update hit count: ", err);
         return res.json({
             success: false,
             status: 500,
@@ -304,10 +276,9 @@ async function updateHitCount(req, res){
 
 async function getHitCount(req, res){
 
-    const user = req.user;
-    const userId = user._id.toString();
-
     try{
+        const user = req.user;
+        const userId = user._id.toString();
         const userApiHitColl = client.db('Criador_DB').collection('user_action_api_rel');
         const userHitData = await userApiHitColl.findOne({ user: userId });
 
@@ -328,7 +299,7 @@ async function getHitCount(req, res){
 
     }
     catch(err){
-        console.log("Error occurred in fetching hit count: ", err)
+        console.error("Error occurred in fetching hit count: ", err)
         return res.json({
             success: false,
             status: 500,
@@ -339,7 +310,6 @@ async function getHitCount(req, res){
 }
 
 async function getCollabs(req, res){
-
     
 
 }
@@ -357,6 +327,7 @@ async function removeCollab(req, res){
 
 module.exports = {
     getActionItem: getActionItem,
+    deleteActionItem: deleteActionItem,
     updateActionItem: updateActionItem,
     addActionItem: addActionItem,
     getAllActionItem: getAllActionItem,

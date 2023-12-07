@@ -8,11 +8,11 @@ function getAllSentPendingConn(req, res){
         
         const sentRequestColl = client.db('Criador_DB').collection('sent_requests');
         const sentRequestCursor = sentRequestColl.find({user: userId, status: 'pending'});
-
         const sentRequests = sentRequestCursor.toArray();
 
         sentRequests
         .then(response=>{
+            console.log("Fetching user all sent pending connections")
             return res.json({
                 success: true,
                 status: 200,
@@ -20,7 +20,7 @@ function getAllSentPendingConn(req, res){
             })
         })
         .catch(err=>{
-            console.error("Failed to fetch sent requests: ",err);
+            console.error("Failed to fetch sent requests by the user ",err);
             return res.json({
                 success: false,
                 status: 400,
@@ -36,7 +36,6 @@ function getAllSentPendingConn(req, res){
             error: err
         })
     }
-
 }
 
 function getAllReceivedPendingConn(req, res){
@@ -52,6 +51,7 @@ function getAllReceivedPendingConn(req, res){
 
         receivedRequests
         .then(response=>{
+            console.log("Fetching all received pending connections")
             return res.json({
                 success: true,
                 status: 200,
@@ -107,7 +107,7 @@ async function acceptRequest(req, res){
             const dataForPartner = userPartnerColl.updateOne({user: partnerId}, 
                 { $push: { partners: userId } 
             });
-
+            console.log("Accepted request");
             return res.json({
                 success: true,
                 success: 200,
@@ -116,6 +116,7 @@ async function acceptRequest(req, res){
 
         }
         else{
+            console.error("Failed to accept the connection");
             return res.json({
                 success: false,
                 success: 400,
@@ -153,7 +154,8 @@ async function cancelRequest(req, res){
             $set: { status: 'cancelled' } 
         });
 
-        if(receivedRequest.modifiedCount>0 && sentRequest.modifiedCount>0){            
+        if(receivedRequest.modifiedCount>0 && sentRequest.modifiedCount>0){  
+            console.log("Connection request cancelled")          
             return res.json({
                 success: true,
                 success: 200,
@@ -162,6 +164,7 @@ async function cancelRequest(req, res){
 
         }
         else{
+            console.error("Failed to cancel the connection")  
             return res.json({
                 success: false,
                 success: 400,
@@ -206,6 +209,7 @@ async function addConnection(req, res){
         })
 
         if(receivedRequest.insertedCount==1 && sentRequest.insertedCount==1){
+            console.log("Connection request sent")
             return res.json({
                 success: true,
                 status: 200,
@@ -213,16 +217,13 @@ async function addConnection(req, res){
             })
         }
         else{
+            console.error("Failed to send connection request")
             return res.json({
                 success: false,
                 status: 400,
                 error: "Failed to send connection request"
             })
         }
-        
-
-
-
     }
     catch(err){
         console.error("Error occurred while sending connection request: ", err);
@@ -233,7 +234,6 @@ async function addConnection(req, res){
         })
     }
 }
-
 
 module.exports = {
     getAllSentPendingConn: getAllSentPendingConn,

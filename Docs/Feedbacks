@@ -6,3 +6,19 @@
 6. Enable logOut feature
 7. Add one png in the landing page
 8. Facing issue in frontend while in action item page
+9. Removing consoles
+10. Use authentication over all apis with req body presence
+11. Handle error handling, what should be the error response in frontend
+12. Handle try and catch in backend
+13. Cleaning frontend
+14. Handling errors and warnings in frontend
+
+Feedback executed:
+1. Enabling logout feature
+2. Removing the irrelevant consoles in backend
+3. Removing the alert after login
+4. Use authentication over all apis with req body presence
+5. Handle try and catch in backend
+6. Cleaning irrelevant variables and consoles
+7. Added delete feature for action item
+8. Change the alignment for elements in home for actionitems

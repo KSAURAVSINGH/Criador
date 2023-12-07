@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/userHeader.css';
-
+import axios from 'axios'
 
 function UserHeaderComp(props) {
 
     const [showDropdown, setShowDropdown] = useState(false);
+    const navigate = useNavigate();
 
     function handleProfileClick(){
         setShowDropdown(!showDropdown);
+    }
+
+    async function handleLogOutClick(){
+        const response = await axios.post('/api/logout');
+        if(response.data.success){
+            navigate('/')
+        }
+        else{
+            console.log("Failed to log out from the page")
+        }
     }
 
     return (
@@ -32,10 +43,10 @@ function UserHeaderComp(props) {
                     </li>                     
                 </ul>  
                 <div>
-                <i class="bi bi-bell fs-3 p-5"></i>
+                <i className="bi bi-bell fs-3 p-5"></i>
                 </div>      
                 <div>
-                    <i class="bi bi-person-circle fs-3" onClick={handleProfileClick}></i>
+                    <i className="bi bi-person-circle fs-3" onClick={handleProfileClick}></i>
                     {
                         showDropdown && 
                         (
@@ -43,7 +54,7 @@ function UserHeaderComp(props) {
                         <Link className='header-profile-link'><div className='header-profile-link-container'>Profile</div></Link>
                         <Link className='header-profile-link'><div className='header-profile-link-container'>Dashboard</div></Link>
                         <Link className='header-profile-link'><div className='header-profile-link-container'>Requests</div></Link>
-                        <Link className='header-profile-link'><div className='header-profile-link-container'>LogOut</div></Link>                        
+                        <Link className='header-profile-link' onClick={handleLogOutClick}><div className='header-profile-link-container'>LogOut</div></Link>                        
                     </div>
                         )
                     }                    

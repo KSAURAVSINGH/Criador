@@ -18,22 +18,18 @@ async function verifyPassword(enteredPassword, storedHashedPassword, salt) {
 
 async function verifyCallback(email, password, done){
 
-    console.log("Email: ", email)
-    console.log("Password: ", password)
-
     const accounts = client.db('Criador_DB').collection('accounts');
-    // console.log("Accounts: ", accounts)
 
     try{
         const user = await accounts.findOne({email: email});
         if (!user) { 
             return done(null, false, { message: 'User not found' }); 
         }
-        console.log("User found: ", user)
+        
         const isMatch = await verifyPassword(password, user.password, user.salt);
-        console.log("Match result: ", isMatch)
 
         if (isMatch) { 
+            console.log("User found")
             return done(null, user); 
         }
         return done(null, false, { message: 'Incorrect username or password' });
@@ -62,7 +58,6 @@ passport.deserializeUser(async (userID,done)=>{
 
     const accounts = client.db('Criador_DB').collection('accounts');
     const user = await accounts.findOne({ _id: userIdnew });
-    // console.log("In desc", user);
 
     if (user) {
       done(null, user);

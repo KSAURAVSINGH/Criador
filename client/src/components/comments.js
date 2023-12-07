@@ -3,7 +3,6 @@ import '../styles/comments.css'
 
 function CommentsComp(props) {
 
-
     function showTextEditorPopUp(){
         // props.editorContent();
         props.popUpDisplay();        

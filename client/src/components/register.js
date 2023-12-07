@@ -16,17 +16,13 @@ function RegisterComp(props) {
 
     function handleSubmit(e){
         e.preventDefault();
-        console.log(userData);
-        // alert(JSON.stringify(userData, null, 2))
         
         axios.post("/api/register", { data: userData})
         .then(response=>{
-            console.log(response);
             return response.data;
         })
         .then(response=>{
             const result = response.success;
-            console.log(response)
             if(result){
                 if(response.body === 'New user registered'){
                     navigate('/login')
@@ -37,7 +33,7 @@ function RegisterComp(props) {
                 }            
             }
             else{
-                console.log('An error occurred while registering user: ', response.error);
+                console.error('An error occurred while registering user: ', response.error);
                 alert('Something went wrong');
                 setUserData({
                     firstname: '', 
@@ -47,7 +43,7 @@ function RegisterComp(props) {
                 })
             }
         })
-        .catch(err=>console.log("Error occurred: ", err))
+        .catch(err=>console.error("Error occurred: ", err))
         
     }
 

@@ -14,8 +14,6 @@ function LoginComp(props) {
 
     async function handleSubmit(e){
         e.preventDefault();
-        console.log(userData);
-        alert(JSON.stringify(userData, null, 2))
 
         const headers = {
             'Content-Type': 'application/json'            

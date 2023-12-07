@@ -1,8 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../styles/table.css'
 import NewItemWindowsComp from './newItemWindow';
+
+const columnConfig = [
+    { databaseField: 'hitCount', displayName: 'Action ID' },
+    { databaseField: 'name', displayName: 'Name' },
+    { databaseField: 'status', displayName: 'Status' },        
+    { databaseField: 'projectName', displayName: 'Project' },
+    { databaseField: 'updatedOn', displayName: 'Last Updated On' },
+    { databaseField: 'partner', displayName: 'Collaborators' }
+  ];
 
 function TableComp(props) {
 
@@ -20,25 +29,11 @@ function TableComp(props) {
         setSubmitFormStatus(!submitFormStatus);
     };
 
-    const navigate = useNavigate();
-    const actionId = 0;
-
-    function navigateToAI(){
-       
-        navigate(`/action-item/:${actionId}`)
-    }
-
-    function openAI(){
-       
-        navigate(`/action-item/:${actionId}`)
-    }
-
     useEffect(function(){
-
+        console.log("Checking run times")
         try{
             axios.get('/api/action-item')
             .then(response=>{
-                console.log("action item response: ", response)
                 if(response.data.success){
                     const items = response.data.body;
                     // const reversedItems = items.reverse();
@@ -47,14 +42,13 @@ function TableComp(props) {
                     setLoading(false)
                 }
                 else{
-                    console.log("Failed to fetch actions")
+                    console.error("Failed to fetch actions: ", response.data.error)
                 }
             })
         }
         catch(err){
-            console.log("Error occurred to fetch actions")            
-        }
-        
+            console.error("Error occurred to fetch actions: ", err)            
+        }        
     }, [submitFormStatus])
 
     if (loading) {
@@ -64,7 +58,6 @@ function TableComp(props) {
     function HandleClickAndSort(list, field){
                 
         const sortBasedOnFieldSelected = sortByField(list, field);
-        console.log("Sorted list", sortBasedOnFieldSelected);
 
         setData(sortBasedOnFieldSelected);
         if(order==='Asc'){
@@ -105,27 +98,13 @@ function TableComp(props) {
           return String(valueA).localeCompare(String(valueB));
         }
       }
-      
-    // if (data.length === 0) {
-    //     return <p>No data available</p>;
-    // }
-    
-    const columnConfig = [
-        { databaseField: 'hitCount', displayName: 'Action ID' },
-        { databaseField: 'name', displayName: 'Name' },
-        { databaseField: 'status', displayName: 'Status' },        
-        { databaseField: 'projectName', displayName: 'Project' },
-        { databaseField: 'updatedOn', displayName: 'Last Updated On' },
-        { databaseField: 'partner', displayName: 'Collaborators' }
-      ];
-
 
     return (
         <div style={{marginLeft: '10%', marginRight: '10%'}}>               
             {showPopup && <NewItemWindowsComp onUpdate={togglePopup} onSubmit={submitPopup}/>}                                      
             <div className='container table-container'>   
                 <div className='add-new-item'>
-                    <button className='btn btn-primary add-logo' onClick={togglePopup}><i class="bi bi-plus-square logo-content"></i>New</button>
+                    <button className='btn btn-primary add-logo' onClick={togglePopup}><i className="bi bi-plus-square logo-content"></i>New</button>
                 </div>                      
                 <table>
                     <thead>
@@ -140,7 +119,7 @@ function TableComp(props) {
                         <tr className='table-row' key={index}>
                             {columnConfig.map((column, newIndex) => (
                             <td className='table-row-data' key={newIndex}>
-                                {column.databaseField == 'name' ? (
+                                {column.databaseField === 'name' ? (
                                     <Link className="table-name-field" to={`/action-item/${row['_id']}`}>
                                         {row[column.databaseField]}
                                     </Link>
