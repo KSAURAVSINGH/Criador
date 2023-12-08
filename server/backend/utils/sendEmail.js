@@ -31,18 +31,22 @@ module.exports = async (email, text, name) => {
 
 		transporter.use('compile', hbs(handlebarOptions))
 		
-		await transporter.sendMail({
+		transporter.sendMail({
 			template: "email",
-			from: process.env.USER,
+			from: process.env.EMAIL_ADD,
 			to: email,
 			subject: "Activate Your Criador Account: Verify Your Email Address",
 			context: {
 				name: name,
 				emailVerifyLink: text
 			  }
-		});
-
-		console.log("email sent successfully");
+		},function(error, info){
+			if (error) {
+				   console.log("Error in sending mail " + error);
+			} else {
+				   console.log('Email sent: ' + info.response);
+			}
+  		});
 
 	} catch (error) {
 		console.log("email not sent!");

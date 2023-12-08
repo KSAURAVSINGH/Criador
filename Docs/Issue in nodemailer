@@ -1,0 +1,3 @@
+Issue: Faced issue with the sendmail tranporter. Getting typeError saying intermediate value is not iterable.
+Fixed: Uninstalled the nodemailer-express-handlebars and re-installed again.
+
