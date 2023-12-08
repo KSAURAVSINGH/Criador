@@ -21,15 +21,19 @@ function NewItemWindowsComp(props) {
     let collaborators = [];
 
     useEffect(function(){
-        axios.get('/api/user')
-        .then(response=>{
-            if(response.data.body){
-                setCollab(response.data.body.email);
-            }
-        })
-        .catch(err=>{
-            setCollab("Unknown")
-        })
+
+        setCollab(props.userDetails.email);
+
+        // axios.get('/api/user')
+        // .then(response=>{
+        //     if(response.data.body){
+        //         setCollab(response.data.body.email);
+        //     }
+        // })
+        // .catch(err=>{
+        //     setCollab("Unknown")
+        // })
+
     }, [])    
 
     function handleChangeName(e){
@@ -75,7 +79,8 @@ function NewItemWindowsComp(props) {
             collaborators = [...collaborators, collab]; 
         }
     
-        let userId = await getUserId();            
+        // let userId = await getUserId(); 
+        let userId = props.userDetails._id;           
         let projectDetails = await getProjectOrCreateNew(project);
         let projectId = projectDetails._id;
 

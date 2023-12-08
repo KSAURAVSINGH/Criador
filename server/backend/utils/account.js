@@ -1,7 +1,7 @@
 const {client} = require('../../database/db_connection')
 const userF = require('./user.js');
 const crypto = require('crypto');
-const saltRounds = 10;
+const sendEmail = require('./sendEmail.js')
 
 async function handlePrerequisites(userId){
 
@@ -26,10 +26,10 @@ function hashPassword(rawPassword, salt) {
 
 function loginUser(req, res){
     
-    console.log("User logged in")
+    console.log("User logged in: ", req)
     return res.json({
         success: true,
-        statusCode: 200,
+        status: 200,
         body: 'Logged In'
     })
     
@@ -39,12 +39,11 @@ async function registerUser(req, res){
 
     try{
 
-        const body = req.body;
-        const data = body.data;
+        const data = req.body;
         
         const salt = crypto.randomBytes(16).toString('hex');
         const hashedPassword = hashPassword(data.password, salt);
-        console.log("Register new user with email ", data.email);
+        console.log("Register new user with email", data.email);
 
         // all fields are required as configured in frontend
         let userDetail = {
@@ -52,7 +51,8 @@ async function registerUser(req, res){
             lastname: data.lastname,
             email: data.email,
             password: hashedPassword,
-            salt: salt
+            salt: salt,
+            verified: false
         }
 
         const accounts = client.db('Criador_DB').collection('accounts');
@@ -62,7 +62,7 @@ async function registerUser(req, res){
             console.log("User already registered in database. Instead LogIn");
             return res.json({
                 success: true,
-                statusCode: 409,
+                status: 409,
                 body: 'User already registered'
             })
         }
@@ -71,12 +71,23 @@ async function registerUser(req, res){
                 const newUserResponse =  await accounts.insertOne(userDetail);
                 console.log("User successfully registered!")
 
+                const tokenDetails = {
+                    userId: newUserResponse.insertedId,
+                    token: crypto.randomBytes(32).toString("hex"),
+                    createdAt: new Date()
+                }
+
+                const token = await client.db('Criador_DB').collection('tokens').insertOne(tokenDetails);
+                
+                const url = `${process.env.BASE_URL}users/${newUserResponse.insertedId}/verify/${tokenDetails.token}`;
+		        await sendEmail(userDetail.email, url, userDetail.firstname);
+
                 await handlePrerequisites(newUserResponse.insertedId);
 
                 return res.json({
                     success: true,
-                    statusCode: 201,
-                    body: 'New user registered'
+                    status: 200,
+                    body: 'An Email sent to your account. Please verify'
                 })
                 
             }
@@ -84,7 +95,7 @@ async function registerUser(req, res){
                 console.error("An error occurred while registering ", err);
                 return res.json({
                     success: false,
-                    statusCode: 400,
+                    status: 400,
                     error: err
                 })
             }
@@ -94,7 +105,7 @@ async function registerUser(req, res){
         console.error("An error occurred while fetching data from DB ", err);
         return res.json({
             success: false,
-            statusCode: 500,
+            status: 500,
             error: err
         })
     }   
@@ -105,7 +116,7 @@ const logoutUser = (req,res,next)=>{
         if(err){
             return res.json({
                 success: false,
-                statusCode: 500,
+                status: 500,
                 error: err
             })
         }
@@ -113,12 +124,13 @@ const logoutUser = (req,res,next)=>{
             console.log("User logged out")
             return res.json({
                 success: true,
-                statusCode: 200,
+                status: 200,
                 body: 'User logged out'
             })
         }     
     });   
 }
+
 
 module.exports = {
     loginUser: loginUser,

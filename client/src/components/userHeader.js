@@ -26,7 +26,7 @@ function UserHeaderComp(props) {
         <div className='user-header'>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container">
-                <Link to="/"><img style={{borderRadius: '30px', height: '40px'}} src='https://as2.ftcdn.net/v2/jpg/01/16/16/21/1000_F_116162105_fzej37FR1pD8LOvbH8UQJvoBqVoTvDFQ.jpg' alt="Your Logo" /></Link>
+                <Link to="/"><img style={{borderRadius: '30px', height: '40px'}} src={process.env.PUBLIC_URL + '/images/logo.jpeg'} alt="Your Logo" /></Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
                 </button>

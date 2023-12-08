@@ -14,5 +14,13 @@ const AccountSchema = {
     password: {
         type: String,
         required: true
+    },
+    salt: {
+        type: String,
+        required: true
+    },
+    verified: {
+        type: Boolean,
+        default: false
     }
 }

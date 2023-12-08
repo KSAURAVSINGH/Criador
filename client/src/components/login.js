@@ -21,7 +21,8 @@ function LoginComp(props) {
         
         try{
             // navigate to home component
-            let response = await axios.post('/api/login', userData, {headers});            
+            let response = await axios.post('/api/login', userData, {headers});  
+            console.log("Response: ", response)          
             setUserData({           
                 email: '',         
                 password: ''
@@ -30,13 +31,16 @@ function LoginComp(props) {
                 response = response.data;
                 console.log("User Logged In")
                 navigate('/home')
-            }
-            
+            }    
+            else{
+                console.log("Authentication Failed. Please check your email if you are a new user.");     
+                alert("Authentication Failed. Please check your email if you are a new user.") 
+            }      
         }
         catch(err){
             if(err.response.status === 401){
-                console.log("Invalid username or password");     
-                alert("Invalid username or password") 
+                console.log("Authentication Failed. Please check your email if you are a new user.");     
+                alert("Authentication Failed. Please check your email if you are a new user.") 
             }
             setUserData({           
                 email: '',         

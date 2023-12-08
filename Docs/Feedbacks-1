@@ -12,6 +12,11 @@
 12. Handle try and catch in backend
 13. Cleaning frontend
 14. Handling errors and warnings in frontend
+15. Remove pop-up just after clicking the create new option
+16. Update all the images with the local ones and remove the online links
+17. Add a uri prefix for every route in the app.js file
+18. Make the email verification message sending presentable
+
 
 Feedback executed:
 1. Enabling logout feature
@@ -23,4 +28,9 @@ Feedback executed:
 7. Added delete feature for action item
 8. Change the alignment for elements in home for actionitems
 10. Fixed react hooks twice triggering error
-11. 
+11. Adding some message for the new user and a quote to motivate
+12. Added verification link for email verification
+13.  Make the email verification message sending presentable
+14. Add a uri prefix for every route in the app.js file
+15. Update all the images with the local ones and remove the online links
+16. 
