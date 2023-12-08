@@ -26,7 +26,7 @@ function hashPassword(rawPassword, salt) {
 
 function loginUser(req, res){
     
-    console.log("User logged in: ", req)
+    console.log("User logged in")
     return res.json({
         success: true,
         status: 200,
