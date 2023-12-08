@@ -25,13 +25,9 @@ https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9
 https://medium.com/@srijaanaparthy/step-by-step-guide-to-install-docker-on-amazon-linux-machine-in-aws-a690bf44b5fe
 
 
-
-
-
-
-
-
-
 1. Installing the docker inside amazon linux 2 using few blogs.
 
 docker-compose -f docker-compose-prod.yml up --build
+
+Issue: How to ge into docker container in amazon linux
+Fixed: docker exec -it criador-api /bin/ash

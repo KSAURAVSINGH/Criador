@@ -1,3 +1,5 @@
 Issue: Faced issue with the sendmail tranporter. Getting typeError saying intermediate value is not iterable.
 Fixed: Uninstalled the nodemailer-express-handlebars and re-installed again.
 
+Issue: How to ge into docker container in amazon linux
+Fixed: docker exec -it criador-api /bin/ash
