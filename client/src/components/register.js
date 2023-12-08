@@ -32,7 +32,7 @@ function RegisterComp(props) {
             const result = response.success;
             if(result){
                 if(response.status === 200){
-                    // alert('An Email sent to your account, please verify')
+                    alert('An Email sent to your account, please verify')
                     navigate('/login')
                 }
                 else{
