@@ -28,7 +28,7 @@ const ActionItemSchema = {
         required: true
     },
     partner: [{
-        type: ObjectId
+        type: ObjectId  // Currently storing email ids
     }],
     project: {
         type: ObjectId,

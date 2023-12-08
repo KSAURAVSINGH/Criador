@@ -2,16 +2,12 @@ const {client} = require('../../database/db_connection')
 
 async function getProjectOrCreateNew(req, res){
 
-    
-
-    const name = req.query.name;
-
-    const projectColl = client.db('Criador_DB').collection('projects');
-
     try{
+        const name = req.query.name;
+        const projectColl = client.db('Criador_DB').collection('projects');
+
         const project = await projectColl.findOne({name: name});
         
-        console.log("Project based on name: ", project);
         if(project){
             return res.json({
                 success: true,
@@ -21,7 +17,6 @@ async function getProjectOrCreateNew(req, res){
         }
         else{
             // Create a new project with the mentioned name if not present already
-
             const user = req.user;
             const userId = user._id;
 
@@ -30,9 +25,9 @@ async function getProjectOrCreateNew(req, res){
                 user: userId
             }
             const newProject = await projectColl.insertOne(projectDetails);
-
-            console.log("Create a new project");
+            
             if(newProject){
+                console.log("Created a new project - ", projectDetails.name);
                 return res.json({
                     success: true,
                     status: 200,
@@ -40,7 +35,7 @@ async function getProjectOrCreateNew(req, res){
                 })
             }
             else{
-                console.log("Failed to fetch project details");
+                console.error("Failed to fetch project details");
                 return res.json({
                     success: false,
                     status: 400,
@@ -48,10 +43,9 @@ async function getProjectOrCreateNew(req, res){
                 })
             }            
         }
-
     }
     catch(err){
-        console.log("Error occurred while fetching project id: ", err);
+        console.error("Error occurred while fetching project id: ", err);
         return res.json({
             success: false,
             status: 500,
@@ -62,20 +56,20 @@ async function getProjectOrCreateNew(req, res){
 
 async function addProject(req, res){
 
-    const user = req.user;
-    const userId = user._id.toString();
-   
-    const body = req.body;
-
-    const userDetails = {user: userId}
-    const projectDetails = {...body, ...userDetails}
-
-    console.log("Adding a new project with details such: ", projectDetails)
-
     try{
+
+        const user = req.user;
+        const userId = user._id.toString();
+        const body = req.body;
+        const userDetails = {user: userId}
+        const projectDetails = {...body, ...userDetails}
+
+        console.log("Adding a new project with details such: ", projectDetails)
+
         const projectColl = client.db('Criador_DB').collection('projects');
         const project = await projectColl.insertOne(projectDetails);
         if(project){
+            console.log("Added a new project")
             return res.json({
                 success: true,
                 status: 201,
@@ -83,6 +77,7 @@ async function addProject(req, res){
             })
         }
         else{
+            console.error("Failed to create a new project")
             return res.json({
                 success: false,
                 status: 400,
@@ -91,7 +86,7 @@ async function addProject(req, res){
         }
     }
     catch(err){
-        console.log("Error occurred while creating project: ", err);
+        console.error("Error occurred while creating project: ", err);
         return res.json({
             success: false,
             status: 500,
@@ -100,20 +95,19 @@ async function addProject(req, res){
     }
 }
 
-function getProjects(req, res){
-
-    const user = req.user;
-    const userId = user._id.toString();
-
-    console.log("Inside get projects all")
+function getProjects(req, res){    
 
     try{
+        const user = req.user;
+        const userId = user._id.toString();
+
         const projectColl = client.db('Criador_DB').collection('projects');
         const projectCursor  = projectColl.find({user: userId})
         const projects = projectCursor.toArray();
 
         projects
         .then(response=>{
+            console.log("Fetching projects of user ", user.email)
             return res.json({
                 success: true,
                 status: 200,
@@ -121,6 +115,7 @@ function getProjects(req, res){
             })
         })
         .catch(err=>{
+            console.error("Failed to fetch projects of user ", user.email)
             return res.json({
                 success: false,
                 status: 400,
@@ -129,7 +124,7 @@ function getProjects(req, res){
         })
     }
     catch(err){
-        console.log("Error occurred while fetching projects ", err)
+        console.error("Error occurred while fetching projects ", err)
         return res.json({
             success: false,
             status: 500,

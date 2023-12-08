@@ -1,21 +1,30 @@
 const {client} = require('../../database/db_connection')
 
 function getUserId(req, res){
-    const user = req.user;
-    const userId = user._id.toString();
-    console.log("User details", user);
-    if(userId){
-        return res.json({
-            success: true,
-            status: 200,
-            body: userId
-        });
+
+    try{
+        const user = req.user;
+        const userId = user._id.toString();
+        if(userId){
+            return res.json({
+                success: true,
+                status: 200,
+                body: userId
+            });
+        }
+        else{
+            return res.json({
+                success: false,
+                status: 500,
+                error: "Failed to fetch user id"
+            });
+        }
     }
-    else{
+    catch(err){
         return res.json({
             success: false,
             status: 500,
-            error: "Failed to fetch user id"
+            error: err
         });
     }
     
@@ -23,31 +32,40 @@ function getUserId(req, res){
 
 function getUserDetails(req, res){
 
-    const user = req.user;
-    console.log("User details", user);
-    if(user){
-        return res.json({
-            success: true,
-            status: 200,
-            body: user
-        });
+    try{
+        const user = req.user;
+        if(user){
+            console.log("Fetching user details")
+            return res.json({
+                success: true,
+                status: 200,
+                body: user
+            });
+        }
+        else{
+            console.error("Failed to fetch user details")
+            return res.json({
+                success: false,
+                status: 500,
+                error: "Failed to fetch user details"
+            });
+        }
     }
-    else{
+    catch(err){
         return res.json({
             success: false,
             status: 500,
-            error: "Failed to fetch user details"
+            error: err
         });
     }
-
 }
 
-async function getAllUsers(req, res){
-
-    const user = req.user;
-    const userId = user._id.toString();;
+async function getAllUsers(req, res){ 
 
     try{
+        const user = req.user;
+        const userId = user._id.toString();
+
         const accountColl = client.db('Criador_DB').collection('accounts');
         const accounts = await accountColl.find({ _id: { $ne: userId } }).toArray();
 
@@ -76,17 +94,15 @@ async function getAllUsers(req, res){
             error: err
         })
     }
-
 }
 
-async function addEmptyPartnerList(userId){
-    
-    const data = {
-        partner: [],
-        user: userId
-    }
+async function addEmptyPartnerList(userId){ 
 
     try{
+        const data = {
+            partner: [],
+            user: userId
+        }
         const userPartnersColl = client.db('Criador_DB').collection('user_partner_rel');
         const userPartners = await userPartnersColl.insertOne(data);
     }
@@ -128,7 +144,6 @@ async function getAllPartners(){
             error: err
         })
     }
-
 }
 
 module.exports = {

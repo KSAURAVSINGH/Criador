@@ -1,15 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
 import '../styles/actionItemBar.css'
+import { useNavigate } from 'react-router-dom';
 
-async function getUserId(){
-    const userId = await axios.get('/api/user/id');
-    if(userId.data.success){
-        return userId.data.body;
-    }
-    return null;
-}
 const options = {
     year: 'numeric',
     month: 'numeric',
@@ -30,48 +23,32 @@ function ActionItemBarComp(props) {
     const [priority, setPriority] = useState('');
     const [updatedOn, setUpdatedOn] = useState('')
     const [pageRefresh, setPageRefreshStatus] = useState(true);
+    const [showDeletePopup, setShowDeletePopup] =  useState(false);
 
-    const aiExtraParams = useRef(null);
-
-    let collaborators = [];
+    const aiExtraParams = useRef(null);    
     const actionId = props.actionId;
 
     useEffect(function(){
-        axios.get('/api/user')
-        .then(response=>{
-            if(response.data.body){
-                setCollab(response.data.body.email);
-            }
-        })
-        .catch(err=>{
-            setCollab("Unknown")
-        })
-    }, [])
-
-
-    useEffect(function(){
             
-        console.log("Inside useEffect hook to get the initial values")
-
         // fetch data of AI from backend apis
         axios.get(`/api/action-item/${actionId}`)
         .then(response=>{
             const data = response.data;
             
-            if(data.success){                
+            if(data.success){      
+                console.log("Fetched action items");          
+                
                 const body = data.body
-                console.log("Action item data: ", body);
-
                 const aiName = body.name;
                 const aiDesc = body.desc;
                 const aiProject = body.projectName;                
-                const aiCollab = body.collab;
+                const aiCollab = body.partner;
                 const aiStatus = body.status;
                 const aiPriority = body.priority;
                 const aiUpdatedOn = body.updatedOn;
                 aiExtraParams.createdOn = body.createdOn;
                 aiExtraParams.updatedOn = body.updatedOn;
-                aiExtraParams.actionItemNum = body.hitCount;                                
+                aiExtraParams.actionItemNum = body.hitCount; 
 
                 setName(aiName);
                 setDesc(aiDesc);                                
@@ -82,104 +59,12 @@ function ActionItemBarComp(props) {
                 setUpdatedOn(aiUpdatedOn);
             }
             else{
-                console.error("Failed to fetch action item with given id")
+                console.error(data.error)
             }
         })
-        .catch(err=>console.log(err))        
-    }, [pageRefresh])    
-
-    async function getProjects(){
-        const projects = await axios.get('/api/project/all');
-
-        if(projects.data.success){
-            return projects.data.body;
-        }
-        else{
-            console.log("Error occurred while fetching projects: ", projects.data.error)
-            return [];
-        }
-    }
+        .catch(err=>console.error("Error occurred while fetching action items: ", err))        
+    }, [pageRefresh, actionId])    
     
-
-    async function addProject(name){
-        const payload = {
-            name: name
-        }
-        const project = await axios.post('/api/project/new', payload)
-
-        if(project.data.success){
-            console.log("New project created")
-        }
-        else{
-            console.log("Failed to create new project")
-        }
-    }
-
-    async function getProjectOrCreateNew(name){
-        const project = await axios.get('/api/project/api/create-by-name', {params: {name: name}});
-
-        if(project.data.success){
-            return project.data.body;
-        }
-        else{
-            console.log("Error occurred while fetching projects: ", project.data.error)
-            return {};
-        }
-    }
-
-    async function getHitCount(){
-        const hitCount = await axios.get('/api/action/hitcount');
-        if(hitCount.data.success){
-            return hitCount.data.body;
-        }
-        else{
-            return null;
-        }
-
-    }
-
-    async function updateHitCount(){
-        const hitCount = await axios.post('/api/action/hitcount');
-        if(hitCount.data.success){
-            return hitCount.data.body;
-        }
-        else{
-            return hitCount.data.error;
-        }
-    }
-
-    // async function getCollabs(){
-    //     const collabs = await axios.get('/api/action/collab/all');
-    //     if(collabs.data.success){
-    //         return collabs.data.body;
-    //     }
-    //     else{
-    //         return [];
-    //     }
-    // }
-
-    // async function addCollab(data){
-    //     // data is the email id of the collaborator
-    //     const collab = await axios.post('/api/action/collab/new', data);
-    //     if(collab.data.success){
-    //         return collab.data.body;
-    //     }
-    //     else{
-    //         return collab.data.error;
-    //     }
-    // }
-
-    // async function removeCollab(data){
-    //     // data is the email id of the collaborator
-    //     const collab = await axios.delete('/action/collab', { params: { data } });
-    //     if(collab.data.success){
-    //         return collab.data.body;
-    //     }
-    //     else{
-    //         return collab.data.error;
-    //     }
-    // }
-
     function handleChangeName(e){
         const value = e.target.value;
         setName(value);        
@@ -190,10 +75,10 @@ function ActionItemBarComp(props) {
         setStatus(value);     
     }
 
-    function handleChangeAssign(e){
-        const value = e.target.value;
-        setCollab(value);  
-    }
+    // function handleChangeAssign(e){
+    //     const value = e.target.value;
+    //     setCollab(value);  
+    // }
 
     function handleChangeProject(e){
         const value = e.target.value;
@@ -209,12 +94,8 @@ function ActionItemBarComp(props) {
         const value = e.target.value;
         setPriority(value);  
     }
-    
 
     async function handleSubmit(e){
-        
-        console.log("Inside handle submit function");
-
         e.preventDefault();
         
         let projectDetails = await getProjectOrCreateNew(project);
@@ -234,81 +115,61 @@ function ActionItemBarComp(props) {
         axios.post(`/api/action-item/${actionId}`, updatedValues)
         .then(response=>{
             if(response.data.success){
-                console.log(response.data.body);
+                console.log("Updating action id");
             }
             else{
-                console.log(response.data.error);
+                console.error(response.data.error);
             }
-
             setPageRefreshStatus(!pageRefresh);
         }) 
         .catch(err=>{
-            console.error("Error occurred while updating values")
-        })
+            console.error("Error occurred while updating values: ", err)
+        })        
+    }
 
-        
+    async function handleDelete(){
+        setShowDeletePopup(true);
+    }
 
+    async function handleDeleteCancel(){
+        setShowDeletePopup(false);
+    }
 
-        if(true){
-            console.log("HI");
-        }
-        else{
-
-            if (collab.trim() !== '') {
-                // Add the new element to the state
-                collaborators = [...collaborators, collab]; 
+    async function handleFinalDeleteDecision(){
+        setShowDeletePopup(false);
+        // call the delete api and navigate to home
+        axios.delete(`/api/action-item/${actionId}`)
+        .then(response=>{
+            if(response.data.success){
+                console.log("Action item deleted");
             }
-
-            
-    
-            let userId = await getUserId();            
-            let projectDetails = await getProjectOrCreateNew(project);
-            let projectId = projectDetails._id;
-
-            await updateHitCount();        
-            let hitCount = await getHitCount();
-
-            console.log("User id: ", userId);
-            console.log("Project id: ", projectId)
-            console.log("Hit count: ", hitCount)
-            console.log("Collaborators: ", collaborators);            
-
-            axios.post("/api/action-item", { data: {                
-                name: name,
-                status: status,
-                partner: collaborators,
-                projectName: project,
-                progressNote: [],
-                user: userId,
-                project: projectId,
-                role: 'admin',
-                createdOn: new Date().toLocaleDateString('en-US', options),
-                updatedOn: new Date().toLocaleDateString('en-US', options),
-                hitCount: hitCount.count
-            }})
-            .then(response=>{
-                console.log(response);
-                setName('');
-                setStatus('');
-                setCollab('');
-                setProject('');    
-                navigate('/home');                    
-
-            })
-            .catch(err=>console.log("Error occurred: ", err))
-
-            
-        }
+        })
+        .catch(err=>{
+            console.error("Error occurred while deleting action item: ", err);
+        })
+        navigate('/home')
     }
 
     return (
         <div style={{marginLeft: '10%', marginRight: '10%'}}>
+            {showDeletePopup && (
+                <div className='delete-overlay'>
+                    <div className='delete-popup'>
+                        <h2>Are you sure?</h2>
+                        <div className='delete-options'>
+                            <button className='btn' style={{backgroundColor: 'grey', color: 'white'}} onClick={handleDeleteCancel}>Cancel</button>
+                            <button className='btn btn-danger' onClick={handleFinalDeleteDecision}>Delete</button>
+                        </div>
+                    </div>
+                </div>                
+            )}
             <div className='container action-item-container'> 
                 <div className='action-item-form'>
                     <form id="action-item-form" onSubmit={handleSubmit}>
                         <div className='action-item-heading'>
-                            <h4>{aiExtraParams.actionItemNum} - {name}</h4>                
-                            <button className='btn btn-primary' type="submit"><i class="bi bi-floppy" style={{paddingRight: '10px'}} ></i>Save</button>                                     
+                            <h4>{aiExtraParams.actionItemNum} - {name}</h4>  
+                            <button className='btn btn-danger heading-delete' onClick={handleDelete}><i className="bi bi-trash3" style={{paddingRight: '10px'}} ></i>Delete</button>                                     
+                            <button className='btn btn-primary' type="submit"><i className="bi bi-floppy" style={{paddingRight: '10px'}} ></i>Save</button>                                     
                         </div>  
                         <div className='row action-item-form-contents '>
                             <div className='col-6'>
@@ -336,7 +197,6 @@ function ActionItemBarComp(props) {
                                 <div className='action-item-status'>
                                     <label htmlFor="aistatus">Status</label>
                                     <select id="aistatus" name='aistatus' value={status} onChange={handleChangeStatus} required>
-                                        <option value="">{status}</option>
                                         <option value="Active">Active</option>
                                         <option value="On Hold">On Hold</option>
                                         <option value="Completed">Completed</option> 
@@ -368,7 +228,7 @@ function ActionItemBarComp(props) {
                                         id="aicollab"
                                         name="aicollab"
                                         value={collab}
-                                        onChange={handleChangeAssign}
+                                        // onChange={handleChangeAssign}
                                         readOnly={true}
                                         required
                                         disabled
@@ -377,7 +237,7 @@ function ActionItemBarComp(props) {
                                 <div className='action-item-priority'>
                                     <label htmlFor="aipriority">Priority</label>
                                     <select id="aipriority" name='aipriority' value={priority} onChange={handleChangePriority} required>
-                                        <option value="">{priority}</option>
+                                        {/* <option value="">{priority}</option> */}
                                         <option value="High">High</option>
                                         <option value="Medium">Medium</option>
                                         <option value="Low">Low</option>                                              
@@ -394,6 +254,18 @@ function ActionItemBarComp(props) {
             </div>
         </div>
     );
+}
+
+async function getProjectOrCreateNew(name){
+    const project = await axios.get('/api/project/api/create-by-name', {params: {name: name}});
+
+    if(project.data.success){
+        return project.data.body;
+    }
+    else{
+        console.log("Error occurred while fetching projects: ", project.data.error)
+        return {};
+    }
 }
 
 export default ActionItemBarComp;

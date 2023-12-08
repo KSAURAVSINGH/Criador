@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local').Strategy
 const crypto = require('crypto')
 const {client} = require('../database/db_connection')
 const { ObjectId } = require('mongodb');
+const sendEmail = require('../backend/utils/sendEmail')
 
 async function verifyPassword(enteredPassword, storedHashedPassword, salt) {
   
@@ -18,22 +19,46 @@ async function verifyPassword(enteredPassword, storedHashedPassword, salt) {
 
 async function verifyCallback(email, password, done){
 
-    console.log("Email: ", email)
-    console.log("Password: ", password)
-
     const accounts = client.db('Criador_DB').collection('accounts');
-    // console.log("Accounts: ", accounts)
-
+    
     try{
         const user = await accounts.findOne({email: email});
         if (!user) { 
             return done(null, false, { message: 'User not found' }); 
         }
-        console.log("User found: ", user)
+        
         const isMatch = await verifyPassword(password, user.password, user.salt);
-        console.log("Match result: ", isMatch)
 
         if (isMatch) { 
+            console.log("Inside verify callback");
+            if(!user.verified){
+              
+              const tokenColl = client.db('Criador_DB').collection('tokens');
+              const token = await tokenColl.findOne({userId: user._id});
+
+              console.log("Token response: ", token);
+
+              if (!token) {
+                console.log("Inside token");
+                const tokenDetails = {
+                  userId: user._id,
+                  token: crypto.randomBytes(32).toString("hex"),
+                  createdAt: new Date()
+                }
+
+                const newToken = tokenColl.insertOne(tokenDetails)
+
+                const url = `${process.env.BASE_URL}users/${user._id}/verify/${tokenDetails.token}`;
+                await sendEmail(user.email, url, user.firstname);
+
+                console.log("An email sent to the user for verification")
+                return done(null, false, { message: 'An Email sent to your account please verify' });
+              }     
+
+              return done(null, false, { message: 'Please, try again' });
+            }
+
+            console.log("User found")
             return done(null, user); 
         }
         return done(null, false, { message: 'Incorrect username or password' });
@@ -62,7 +87,6 @@ passport.deserializeUser(async (userID,done)=>{
 
     const accounts = client.db('Criador_DB').collection('accounts');
     const user = await accounts.findOne({ _id: userIdnew });
-    // console.log("In desc", user);
 
     if (user) {
       done(null, user);

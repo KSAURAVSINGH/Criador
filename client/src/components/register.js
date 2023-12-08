@@ -16,19 +16,17 @@ function RegisterComp(props) {
 
     function handleSubmit(e){
         e.preventDefault();
-        console.log(userData);
-        // alert(JSON.stringify(userData, null, 2))
-        
-        axios.post("/api/register", { data: userData})
+        alert('An Email sent to your account, please verify')
+
+        axios.post("/api/register", userData)
         .then(response=>{
-            console.log(response);
             return response.data;
         })
         .then(response=>{
             const result = response.success;
-            console.log(response)
             if(result){
-                if(response.body === 'New user registered'){
+                if(response.status === 200){
+                    // alert('An Email sent to your account, please verify')
                     navigate('/login')
                 }
                 else{
@@ -37,8 +35,8 @@ function RegisterComp(props) {
                 }            
             }
             else{
-                console.log('An error occurred while registering user: ', response.error);
-                alert('Something went wrong');
+                console.error('An error occurred while registering user: ', response.error);
+                alert('Something went wrong. Try again later');
                 setUserData({
                     firstname: '', 
                     lastname: '',
@@ -47,7 +45,7 @@ function RegisterComp(props) {
                 })
             }
         })
-        .catch(err=>console.log("Error occurred: ", err))
+        .catch(err=>console.error("Error occurred: ", err))
         
     }
 

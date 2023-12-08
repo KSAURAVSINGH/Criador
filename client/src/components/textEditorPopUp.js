@@ -25,25 +25,24 @@ function TextEditorPopUpComp(props) {
 
     const [content, setContent] = useState('');
     
-
     useEffect(()=>{
         setContent(props.editorContent.content);
-        console.log("Content: ", content);
     },[])
 
-    async function getUserId(){
-        const userId = await axios.get('/api/user/id');
-        if(userId.data.success){
-            return userId.data.body;
-        }
-        return null;
-    }
+    // async function getUserId(){
+    //     const userId = await axios.get('/api/user/id');
+    //     if(userId.data.success){
+    //         return userId.data.body;
+    //     }
+    //     return null;
+    // }
 
     async function saveContentToDB(){
 
         try{
-            const userId = await getUserId();
+            // const userId = await getUserId();
             const actionId = props.actionId;
+            const userId = props.user._id;
 
             const details = {
                 content: content,
@@ -58,7 +57,7 @@ function TextEditorPopUpComp(props) {
                 console.log("Note has been successfully added");                
             }
             else{
-                console.log("Failed to add the note. Try again.");
+                console.error("Failed to add the note. Try again.");
             }
 
         }
@@ -69,7 +68,6 @@ function TextEditorPopUpComp(props) {
 
     async function handleSaveClick(){
 
-        console.log("Save button is clicked")
         try{
             const pnId = props.editorContent._id;
 
@@ -88,7 +86,7 @@ function TextEditorPopUpComp(props) {
             }
         }
         catch(err){
-            console.error("Error occurred while updating progress note")
+            console.error("Error occurred while updating progress note: ", err)
         }
 
     }
@@ -115,15 +113,12 @@ function TextEditorPopUpComp(props) {
     }
 
     function handleEditorContent(e){
-        // const value = e.target.value;
-        console.log("Value: ",e)
         setContent(e);  
     }
 
     function isValueChanged(){
         return content !== props.editorContent.content;
     }
-
 
     return (
         <div className='text-editor-pop-up'>

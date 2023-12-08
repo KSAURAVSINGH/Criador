@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/landing.css'
 import HeaderComp from './header';
 
@@ -9,9 +9,6 @@ function LandingComp(props) {
 
     function navigateToLogin(){
         navigate('/login')
-    }
-    function navigateToRegister(){
-        navigate('/register')
     }
 
     return (

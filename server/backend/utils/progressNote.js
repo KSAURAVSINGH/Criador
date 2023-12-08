@@ -10,8 +10,8 @@ async function addProgressNote(req, res){
         const progressNoteColl = client.db('Criador_DB').collection('progress_notes');
         const progressNote = await progressNoteColl.insertOne(body);
 
-        console.log("Progress note: ", progressNote)
         if(progressNote){
+            console.log("Adding a new progress note")
             return res.json({
                 success: true,
                 status: 201,
@@ -19,6 +19,7 @@ async function addProgressNote(req, res){
             })
         }
         else{
+            console.error("Failed to add a new progress note")
             return res.json({
                 success: false,
                 status: 400,
@@ -27,22 +28,19 @@ async function addProgressNote(req, res){
         }
     }
     catch(err){
-        console.log("Error occurred while creating progress note: ", err);
+        console.error("Error occurred while creating progress note: ", err);
         return res.json({
             success: false,
             status: 500,
             error: err
         })
     }
-
 }
 
 async function getProgressNotesRefAction(req, res){
 
     try{
-
         const actionId = req.params.actionId;
-
         const query = {
             "actionId": actionId
         };
@@ -51,7 +49,7 @@ async function getProgressNotesRefAction(req, res){
         const progressNotes = await progressNoteColl.find(query).toArray();
 
         if(progressNotes){
-            const descProgressNotes = progressNotes.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+            // const descProgressNotes = progressNotes.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
             return res.json({
                 success: true,
                 status: 200,
@@ -88,35 +86,31 @@ async function updateProgressNote(req, res){
         const progressNoteColl = client.db('Criador_DB').collection('progress_notes');
         const progressNotes = await progressNoteColl.updateOne({_id: new ObjectId(pnId)}, updateOperation);
 
-        // console.log("Progress Note update: ", progressNotes)
-
         if(progressNotes){
+            console.log("Progress note updated")
             return res.json({
                 success: true,
                 status: 200,
-                body: "Updated the progress notes"
+                body: "Updated the progress note"
             })   
         }
         else{
+            console.error("Failed to update progress note")
             return res.json({
                 success: false,
                 status: 400,
-                error: "Failed to fetch update progress notes"
+                error: "Failed to fetch update progress note"
             })
         }
-
-
     }
     catch(err){
-        console.error("Error occurred while updating progress notes: ", err)
+        console.error("Error occurred while updating progress note: ", err)
         return res.json({
             success: false,
             status: 500,
             error: err
         })
     }
-
-
 }
 
 module.exports = {
