@@ -49,7 +49,8 @@ async function getProgressNotesRefAction(req, res){
         const progressNotes = await progressNoteColl.find(query).toArray();
 
         if(progressNotes){
-            // const descProgressNotes = progressNotes.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+            const descProgressNotes = progressNotes.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+           
             return res.json({
                 success: true,
                 status: 200,

@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/textEditorPopUp.css'
-import ReactQuill from 'react-quill';
 import axios from 'axios';
+import ReactQuill from 'react-quill';
+import Quill from 'quill';
+import 'react-quill/dist/quill.snow.css';
+// import 'quill-image-compress/dist/quillImageCompress.css';
+import ImageCompress from 'quill-image-compress';
 
+Quill.register('modules/imageCompress', ImageCompress);
 
 const options = {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
+    second: '2-digit'
   };
 
 const modules = {
@@ -18,7 +24,16 @@ const modules = {
       ['bold', 'italic', 'underline','strike', 'blockquote'],
       [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
       ['link', 'image', 'video']
-    ]
+    ],
+    imageCompress: {
+        quality: 0.7, // default
+        maxWidth: 600, // default
+        maxHeight: 500, // default
+        imageType: 'image/jpeg', // default
+        debug: true, // default
+        suppressErrorLogging: false,
+        insertIntoEditor: undefined
+      }  
 }
 
 function TextEditorPopUpComp(props) {
@@ -119,6 +134,7 @@ function TextEditorPopUpComp(props) {
     function isValueChanged(){
         return content !== props.editorContent.content;
     }
+    Quill.register('modules/imageCompress', ImageCompress);
 
     return (
         <div className='text-editor-pop-up'>

@@ -7,7 +7,8 @@ const options = {
     month: 'numeric',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
+    second: '2-digit'
   };
 
 function NewItemWindowsComp(props) {
@@ -73,7 +74,7 @@ function NewItemWindowsComp(props) {
     async function handleSubmit(e){
         
         e.preventDefault();
-        
+        props.onUpdate(); 
         if (collab.trim() !== '') {
             // Add the new element to the state
             collaborators = [...collaborators, collab]; 
@@ -110,8 +111,7 @@ function NewItemWindowsComp(props) {
             setProject('');
             setDesc('');
             setPriority('');    
-            props.onSubmit();
-            props.onUpdate();                
+            props.onSubmit();                           
 
         })
         .catch(err=>console.error("Error occurred: ", err))

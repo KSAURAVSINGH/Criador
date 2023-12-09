@@ -8,7 +8,8 @@ const options = {
     month: 'numeric',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
+    second: '2-digit'
   };
 
 function ActionItemBarComp(props) {
@@ -143,11 +144,11 @@ function ActionItemBarComp(props) {
             if(response.data.success){
                 console.log("Action item deleted");
             }
+            navigate('/home')
         })
         .catch(err=>{
             console.error("Error occurred while deleting action item: ", err);
-        })
-        navigate('/home')
+        })        
     }
 
     return (
