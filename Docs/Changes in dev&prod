@@ -7,3 +7,4 @@ Make these cahnges to run in prod from locally running the project.
     docker-compose-dev.yml
     docker-compose-prod.yml
     docker-compose.yml
+4. Update the version in package.json and package-lock.json in both client and server side.
