@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ActionItemBarComp from './actionItemBar';
 import ProgressNoteComp from './progressNote';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import UserHeaderComp from './userHeader';
 import '../styles/actionItem.css'
 import axios from 'axios';

@@ -1,0 +1,109 @@
+Technologies:
+Nodejs, Expressjs, React, MongoDB
+
+Features:
+1. User can create an account.
+2. User can create work items.
+3. User can update the work items.
+4. User can view the work items.
+5. User can generate reports.
+6. System can send out notifications for inactive work items.
+
+Entities: 
+1. User
+2. AccountManager
+3. ActionItem
+4. ActionItemManager
+5. ProgressNotes
+6. Reports
+7. Notifications
+8. Projects
+
+Entities in Detail:
+
+1. User
+    DataMembers:
+        1. username
+        2. password
+        3. first name
+        4. last name
+        5. email
+        6. userID
+    DataFunctions:
+        1. getUser()
+
+2. Account
+    DataMembers:
+        1. List of Users
+    DataFunction:
+        1. addUser()
+        2. updateUser()
+        3. deleteUser()
+
+3. ActionItems
+    DataMembers:
+        1. Enum of status
+            a.
+        2. Enum of stages
+        2. List of ProgressNotes
+        3. Name
+        4. Collaborators
+        5. Current Status
+        6. Project Name
+        7. User ID
+        8. Project ID
+    DataFunctions:
+        1. getWorkItem()
+        2. addUserToAI()
+        3. removeUserToAI()
+        4. getUserOfAI()
+        5. getStatus()
+        6. updateStatus()
+        7. getName()
+        8. updateName()
+        9. addProgressNotes()
+        10. removeProgressNotes()
+        11. getListOfProgressNotes()
+        12. getProjectName()
+        13. updateProjectName()
+
+4. ActionItemManager
+    DataMembers:
+    DataFunction:
+        1. getActionItems()
+        2. addActionItems()
+        3. removeActionItems()
+
+5. ProgressNote
+    DataMembers:
+        1. Text(desc/update)
+        2. Images
+        3. Links
+    DataFunctions:
+        1. getPNDetails()
+        2. addImages()
+        3. removeImages()
+        4. addLinks()
+        5. removeLinks()
+        6. getDesc()
+        7. updateDesc()
+
+6. Report
+    DataMembers:
+    DataFunctions:
+        1. getAIBasedOnTime()
+        2. getAIBasedOnStatus()
+        3. prepareReportBasedOnTime()
+        4. prepareReportBasedOnStatus()
+
+7. Notification
+    DataMembers:
+    DataFunctions:  
+        1. sendMailWithReport()
+        2. sendMailForInactiveAI()
+        
+8. Projects
+    Data Members:
+        1. name
+        2. userId
+
