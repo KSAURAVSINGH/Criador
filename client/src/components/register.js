@@ -110,7 +110,7 @@ function RegisterComp(props) {
                     <label className='reg-label' htmlFor="password">Password:</label>
                     <input
                     className='reg-input'
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     value={userData.password}

@@ -9,7 +9,7 @@ async function verifyEmailToken(req, res){
         const user = await accounts.findOne({ _id: userId })
 
 		if (!user){
-            res.send('<h3>Invalid link</h3>')                 
+            return res.send('<h3>Invalid link</h3>')                 
         }
 
         const tokenColl = client.db('Criador_DB').collection('tokens');
@@ -19,7 +19,7 @@ async function verifyEmailToken(req, res){
         })
 
         if (!token){
-            res.send('<h3>Invalid link</h3>')        
+            return res.send('<h3>Invalid link</h3>')        
         }
         
         await accounts.updateOne({_id: user._id}, {$set: {'verified': true}});
@@ -28,11 +28,11 @@ async function verifyEmailToken(req, res){
             userId: user._id
         })
 
-        res.send('<h3>Email verified successfully</h3>') 
+        return res.send('<h3>Email verified successfully. Go to <a href="http://criador.in/login">Login</a> page</h3>') 
 
 	} catch (error) {
 
-        res.send('<h3>Something went wrong. Please try again later</h3>') 
+        return res.send('<h3>Something went wrong. Please try again later</h3>') 
 	}
 };
 

@@ -1,0 +1,10 @@
+Make these cahnges to run in prod from locally running the project.
+
+1. Remove the proxy from package.json file of client - "proxy": "http://localhost:8000"
+2. Comment the RemoveUriSuffixMiddleware function in app.js file in server.
+3. Change the .gitignore in main/master branch to 
+    Docs
+    docker-compose-dev.yml
+    docker-compose-prod.yml
+    docker-compose.yml
+4. Update the version in package.json and package-lock.json in both client and server side.

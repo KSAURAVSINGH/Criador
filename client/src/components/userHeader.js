@@ -15,6 +15,7 @@ function UserHeaderComp(props) {
     async function handleLogOutClick(){
         const response = await axios.post('/api/logout');
         if(response.data.success){
+            console.log("User logged out")
             navigate('/')
         }
         else{

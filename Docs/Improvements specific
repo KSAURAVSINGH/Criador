@@ -1,0 +1,3 @@
+1. While fetching all action items or going to home page, it is hitting the api 4 times.
+2. Fetching user details is happening multiple times and getting the logs
+3. When popping new window for creating new action item, user details is being called 2 times

@@ -1,0 +1,408 @@
+<div style={{marginLeft: '10%', marginRight: '10%'}}>
+            <div className='container action-item-container'> 
+                <div className='action-item-heading'>
+                    <h3>{aiExtraParams.actionItemNum} - {name}</h3>                
+                    <i class="bi bi-arrow-left"></i>
+                </div>               
+                
+                <div className='action-item-form'>
+                    <form id="action-item-form" onSubmit={handleSubmit}>
+                        <div className='action-item-row1'>                    
+                            <div className='action-item-name'>
+                                <label htmlFor="ainame">Name</label>
+                                <input
+                                type="text"
+                                id="ainame"
+                                name="ainame"
+                                value={name}
+                                onChange={handleChangeName}
+                                required
+                                />
+                            </div>
+                            <div className='action-item-status'>
+                                <label htmlFor="aistatus">Status</label>
+                                <select id="aistatus" name='aistatus' value={status} onChange={handleChangeStatus} required>
+                                    <option value="">{status}</option>
+                                    <option value="Active">Active</option>
+                                    <option value="On Hold">On Hold</option>
+                                    <option value="Completed">Completed</option> 
+                                    <option value="Closed">Closed</option> 
+                                    <option value="Cancelled">Cancelled</option>                            
+                                </select>   
+                            </div>
+                        </div>                    
+                        <div className='action-item-row2'>
+                            <div className='action-item-project'>
+                                <label htmlFor="aiproject">Project</label>
+                                <input
+                                type="text"
+                                id="aiproject"
+                                name="aiproject"
+                                value={project}
+                                onChange={handleChangeProject}
+                                required
+                                />
+                            </div>
+                            <div className='priority-dropdown action-item-priority'>
+                                <label htmlFor="aipriority">Priority</label>
+                                <select id="aipriority" name='aipriority' value={priority} onChange={handleChangePriority} required disabled>
+                                    <option value="">{priority}</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>                                              
+                                </select>     
+                            </div>      
+                        </div>
+                        <div className='action-item-row3'>
+                            <div className='action-item-desc'>
+                                <label htmlFor="aidesc">Description:</label>
+                                <input
+                                type="text"
+                                id="aidesc"
+                                name="aidesc"
+                                value={desc}
+                                onChange={handleChangeDesc}
+                                required
+                                disabled
+                                />
+                            </div>
+                            <div className='action-item-created'>
+                                <label htmlFor="aidesc">Created On:</label>
+                                {aiExtraParams.createdOn}
+                            </div>
+                        </div>
+                        <div className='action-item-row4'>
+                            <div className='action-item-collab'>
+                                <label htmlFor="aicollab">Collaborators</label>
+                                <input
+                                type="text"
+                                id="aicollab"
+                                name="aicollab"
+                                value={collab}
+                                onChange={handleChangeAssign}
+                                readOnly={true}
+                                required
+                                />
+                            </div>
+                            <div className='action-item-updated'>
+                                <label htmlFor="aidesc">Updated On:</label>
+                                {updatedOn}
+                            </div>
+                        </div>    
+                        <button className='btn btn-primary' type="submit">Submit</button>         
+                    </form>
+                </div>
+
+            </div>
+            
+        </div>
+    );
+
+
+
+
+
+    import React, { useEffect, useRef, useState } from 'react';
+    import ReactQuill from 'react-quill';
+    import 'react-quill/dist/quill.snow.css';
+    import '../styles/progressNote.css'
+    import axios from 'axios';
+    import CommentsComp from './comments';
+    import TextEditorPopUpComp from './textEditorPopUp';
+    
+    const options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      };
+    
+    function ProgressNoteComp(props) {
+        const [content, setContent] = useState('');
+        const [savedContent, setSavedContent] = useState([]);
+        const [copySavedContent, setCopySavedContent] = useState([]);
+        const [userDetails, setUserDetails] = useState({});
+        const [showPopUp, setShowPopup] = useState(false);
+        const [changeAppeared, setChangeAppeared] = useState(false);
+        const [editContent,setEditContent] = useState({
+            content: ''
+        });
+    
+        useEffect(()=>{
+    
+            axios.get(`/progress-note/action/${props.actionId}`)
+            .then(response=>{
+                if(response.data.success){
+                    setSavedContent(response.data.body);
+                    setCopySavedContent(response.data.body.map((data)=>({value: data.content, readOnly: true})));                
+                }
+                else{
+                    console.error("Failed to fetch progress notes: ", response.data.error);
+                }
+            })
+            .catch(err=>{
+                console.error("Error occurred while fetching already existing progress notes");
+            })
+    
+    
+        },[changeAppeared])
+    
+        useEffect(()=>{
+            axios.get('/user')
+            .then(user=>{
+                if(user.data.success){
+                    setUserDetails(user.data.body);
+                }
+                else{
+                    console.log(user.data.error)
+                }
+            })
+            .catch(err=>console.log("Error occurred while fetching user details"))
+        },[userDetails])
+    
+        const modules = {
+            toolbar: [
+              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+              ['bold', 'italic', 'underline','strike', 'blockquote'],
+              [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+              ['link', 'image', 'video']
+            ]
+        }
+    
+        async function getUserId(){
+            const userId = await axios.get('/user/id');
+            if(userId.data.success){
+                return userId.data.body;
+            }
+            return null;
+        }
+    
+        async function getUserDetails(){
+            const user = await axios.get('/user');
+            if(user.data.success){
+                return user.data.body;
+            }
+            return null;
+        }
+    
+        async function saveContentToDB(){
+    
+            try{
+                const userId = await getUserId();
+                const actionId = props.actionId;
+    
+                const details = {
+                    content: content,
+                    userId: userId,
+                    actionId: actionId,
+                    updatedOn: new Date().toLocaleDateString('en-US', options),
+                    createdOn: new Date().toLocaleDateString('en-US', options)
+                }
+    
+                const response = await axios.post('/progress-note', details);
+                if(response.data.success){
+                    console.log("Note has been successfully added");                
+                }
+                else{
+                    console.log("Failed to add the note. Try again.");
+                }
+    
+            }
+            catch(err){
+                console.error("Error occurred while adding note: ", err);
+            }        
+        }
+    
+        function handleCancelNote(){
+    
+            // clear the content 
+            setContent('');
+        }
+    
+        async function handleSaveNote(){
+    
+            // save the data to the database
+            await saveContentToDB();
+            setContent('');
+    
+        }
+    
+        function handleEditClick(index){
+            const updatedQuillStates = [...copySavedContent];
+            updatedQuillStates[index] = {
+              ...updatedQuillStates[index],
+              readOnly: false,
+            };
+            setCopySavedContent(updatedQuillStates);
+    
+            return (
+                <button>Save</button>
+            )
+    
+        }
+    
+        const handlePNChange = (value, index) => {
+            const updatedQuillStates = [...copySavedContent];
+            updatedQuillStates[index] = {
+              ...updatedQuillStates[index],
+              value,
+            };
+            setCopySavedContent(updatedQuillStates);
+          };
+        
+        function handleSaveClick(index, data){
+    
+            console.log("Save button is clicked")
+            try{
+                const pnId = data._id;
+    
+                const details = {
+                    'content': copySavedContent[index].value,
+                    'updatedOn': new Date().toLocaleDateString('en-US', options)
+                }
+    
+                axios.post(`/progress-note/note/${pnId}`, details)
+                .then(response=>{
+                    console.log("Updated the progress note successfully")
+                    const updatedQuillStates = [...copySavedContent];
+                    updatedQuillStates[index].readOnly = true;
+                    setCopySavedContent(updatedQuillStates)
+                }) 
+                .catch(err=>console.error("Failed to update the progress note"))
+    
+            }
+            catch(err){
+                console.error("Error occurred while updating progress note")
+            }
+    
+        }
+    
+        function handleCancelClick(index, data){
+            try{
+                const updatedQuillStates = [...copySavedContent];
+                updatedQuillStates[index].value = data.content;
+                updatedQuillStates[index].readOnly = true;
+                setCopySavedContent(updatedQuillStates)
+    
+            }
+            catch{
+    
+            }
+        }
+    
+        function isValueChanged(index, data){
+            return copySavedContent[index].value !== data.content;
+        }
+    
+        function handleEditorPopUp(){
+            setShowPopup(!showPopUp)
+        }
+    
+        function handleEditorContent(data){
+            setEditContent(data);
+            setShowPopup(!showPopUp)
+            if(!showPopUp){
+                setChangeAppeared(!changeAppeared)
+            }
+        }
+    
+        function handlePopUpDisplay(){
+            setShowPopup(!showPopUp)
+            if(!showPopUp){
+                setChangeAppeared(!changeAppeared)
+            }
+            
+        }
+    
+      function handleNewUpdate(){
+        setShowPopup(!showPopUp);
+        if(!showPopUp){
+            setChangeAppeared(!changeAppeared)
+        }
+        
+      }
+    
+      return (
+        <div className='progress-note'>
+            <div>
+                {showPopUp && <TextEditorPopUpComp popUpDisplay={handlePopUpDisplay} editorContent={editContent} user={userDetails} actionId={props.actionId}/> }
+            </div>
+            <div>
+                <button onClick={handleNewUpdate}>Add new update</button>
+            </div>
+            {
+                savedContent.map((data,index)=>(
+                    <div key={index}>   
+                        <CommentsComp content={data} user={userDetails} popUpDisplay={()=>handleEditorContent(data)}/>
+                    </div>                
+                ))
+            }
+    
+            {/* <ReactQuill 
+                theme="snow" 
+                value={content} 
+                onChange={setContent} 
+                modules={modules}
+                className='pn-react-quill'
+            />
+            { content!=='' && (
+                <div className='pn-button-section'>
+                    <button className='pn-cancel-button' onClick={handleCancelNote}>Cancel</button>
+                    <button className='pn-save-button' onClick={handleSaveNote}>Save</button>  
+                </div>
+            )}
+            
+            <div>
+                {savedContent.map((data,index)=>(
+                    <div key={index} style={{marginTop: '80px'}}>   
+                        <ReactQuill 
+                            theme="snow" 
+                            value={copySavedContent[index].value} 
+                            readOnly={copySavedContent[index].readOnly}
+                            onChange={(value)=>{handlePNChange(value, index)}} 
+                            modules={modules}
+                            className='pn-react-quill'
+                        />
+                        {!copySavedContent[index].readOnly && (
+                            <div className='pn-button-section'>                        
+                            <button 
+                                onClick={() => handleCancelClick(index,data)}
+                                className='pn-cancel-button'   
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                onClick={() => handleSaveClick(index,data)}
+                                disabled={!isValueChanged(index,data)}
+                                className='pn-save-button'    
+                            >
+                                Save
+                            </button>
+                            </div>
+                        )}
+                        {copySavedContent[index].readOnly && (
+                            <div className='pn-button-section'>
+                                <button 
+                                    onClick={() => handleEditClick(index)}
+                                    className='pn-edit-button' 
+                                    >
+                                        Edit
+                                </button>
+                            </div>
+                        )}                    
+                    </div>
+                ))}
+            </div> */}
+            <div style={{height: '100px'}} />
+        </div>
+        
+      )
+    }
+    
+    export default ProgressNoteComp;
+
+
+
+    rgb(17,24,39)
