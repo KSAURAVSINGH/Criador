@@ -28,7 +28,7 @@ async function verifyEmailToken(req, res){
             userId: user._id
         })
 
-        return res.send('<h3>Email verified successfully</h3>') 
+        return res.send('<h3>Email verified successfully. Go to <a href="http://criador.in/login">Login</a> page</h3>') 
 
 	} catch (error) {
 

@@ -204,14 +204,6 @@ function NewItemWindowsComp(props) {
     );
 }
 
-async function getUserId(){
-    const userId = await axios.get('/api/user/id');
-    if(userId.data.success){
-        return userId.data.body;
-    }
-    return null;
-}
-
 async function getProjectOrCreateNew(name){
     const project = await axios.get('/api/project/api/create-by-name', {params: {name: name}});
 

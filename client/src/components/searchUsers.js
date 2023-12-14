@@ -36,9 +36,6 @@ function SearchUsersComp(props) {
         const userDetails = await getAllUsers();
         const userId = await getUserId();
 
-        console.log("All Users :", userDetails );
-        console.log("User Id: ", userId)
-
         return (
             <ul>
             {userDetails.map((user, index) => (

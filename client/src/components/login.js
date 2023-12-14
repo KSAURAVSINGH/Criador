@@ -22,7 +22,6 @@ function LoginComp(props) {
         try{
             // navigate to home component
             let response = await axios.post('/api/login', userData, {headers});  
-            console.log("Response: ", response)          
             setUserData({           
                 email: '',         
                 password: ''
@@ -89,7 +88,7 @@ function LoginComp(props) {
                     <label className="login-label" htmlFor="password">Password:</label>
                     <input
                     className='login-input'
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     value={userData.password}

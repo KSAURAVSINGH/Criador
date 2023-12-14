@@ -139,7 +139,7 @@
                     setCopySavedContent(response.data.body.map((data)=>({value: data.content, readOnly: true})));                
                 }
                 else{
-                    console.log("Failed to fetch progress notes: ", response.data.error);
+                    console.error("Failed to fetch progress notes: ", response.data.error);
                 }
             })
             .catch(err=>{
