@@ -84,38 +84,38 @@ server - 'http://localhost:8000'
 # Client
 Name | Version
 --- | ---
-"@testing-library/jest-dom": "^5.17.0",
-"@testing-library/react": "^13.4.0",
-"@testing-library/user-event": "^13.5.0",
-"axios": "^1.6.0",
-"bootstrap": "^5.3.2",
-"bootstrap-icons": "^1.11.1",
-"mongodb": "^6.2.0",
-"nodemon": "^3.0.1",
-"quill": "^1.3.7",
-"quill-image-compress": "^1.2.30",
-"react": "^18.2.0",
-"react-dom": "^18.2.0",
-"react-quill": "^2.0.0",
-"react-router-dom": "^6.18.0",
-"react-scripts": "5.0.1",
-"web-vitals": "^2.1.4"
+@testing-library/jest-dom| ^5.17.0,
+@testing-library/react| ^13.4.0,
+@testing-library/user-event| ^13.5.0,
+axios| ^1.6.0,
+bootstrap| ^5.3.2,
+bootstrap-icons| ^1.11.1,
+mongodb| ^6.2.0,
+nodemon| ^3.0.1,
+quill| ^1.3.7,
+quill-image-compress| ^1.2.30,
+react| ^18.2.0,
+react-dom| ^18.2.0,
+react-quill| ^2.0.0,
+react-router-dom| ^6.18.0,
+react-scripts| 5.0.1,
+web-vitals| ^2.1.4
 
 # Server
 Name | Version
 --- | ---
-"connect-mongo": "^5.1.0",
-"crypto": "^1.0.1",
-"dotenv": "^16.3.1",
-"express": "^4.18.2",
-"express-session": "^1.17.3",
-"mongodb": "^6.2.0",
-"nodemailer": "^6.9.7",
-"nodemailer-express-handlebars": "^6.1.0",
-"nodemon": "^3.0.1",
-"passport": "^0.6.0",
-"passport-local": "^1.0.0",
-"path": "^0.12.7"
+connect-mongo| ^5.1.0,
+crypto| ^1.0.1,
+dotenv| ^16.3.1,
+express| ^4.18.2,
+express-session| ^1.17.3,
+mongodb| ^6.2.0,
+nodemailer| ^6.9.7,
+nodemailer-express-handlebars| ^6.1.0,
+nodemon| ^3.0.1,
+passport| ^0.6.0,
+passport-local| ^1.0.0,
+path| ^0.12.7
 
 ## Contact Me
 kumarsauravsingh1234567890@gmail.com
