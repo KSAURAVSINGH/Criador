@@ -14,7 +14,7 @@ function LandingComp(props) {
     return (
         <div className='landing'>
             <HeaderComp />
-            
+            {/* <p style={{fontSize: '80px', fontWeight: '700', color: 'white', fontFamily: 'Georgia', paddingTop: '20px',  textAlign: 'center'}}>Criador</p> */}
             <div className='container p-3'>
                 <div className='col'>
                     {/* <div className='row-8 header'>
@@ -25,8 +25,9 @@ function LandingComp(props) {
                     <div className='row-4 intro-context-parent'>
                         <div className='col-4'>
                             <div className='intro-context text-left'>
-                                <p  style={{fontSize: '35px', color: '#FFFFFF', textAlign: 'left', marginBottom: '20px'}}><b>From Chaos to Control</b></p>
-                                <p style={{fontSize: '20px'}}>Transform your tasks into triumphs. Our platform equips you to maintain organization, focus, and a competitive edge, keeping you ahead of the game.</p>                                 
+                                <p style={{fontSize: '100px', fontWeight: '700', color: 'white', fontFamily: 'Georgia',  textAlign: 'center'}}>Criador</p>
+                                <p  style={{fontSize: '35px', color: 'rgb(185, 176, 250)', textAlign: 'left', marginBottom: '20px'}}><b>From Chaos to Control</b></p>
+                                <p style={{fontSize: '20px', color: 'rgb(189, 184, 226)'}}>Transform your tasks into triumphs. Our platform equips you to maintain organization, focus, and a competitive edge, keeping you ahead of the game.</p>                                 
                             </div>
                             <div>
                                 <div className='started-button'>
