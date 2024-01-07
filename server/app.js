@@ -35,14 +35,14 @@ app.use(passport.initialize())
 app.use(passport.session());
 
 // comment this in production
-const RemoveUriSuffixMiddleware = (req, res, next) => { 
-    const uriPrefix = '/api';
-    if (req.url.startsWith(uriPrefix)) {
-      req.url = req.url.slice(uriPrefix.length);
-    }
-    next();
-};
-app.use(RemoveUriSuffixMiddleware);
+// const RemoveUriSuffixMiddleware = (req, res, next) => { 
+//     const uriPrefix = '/api';
+//     if (req.url.startsWith(uriPrefix)) {
+//       req.url = req.url.slice(uriPrefix.length);
+//     }
+//     next();
+// };
+// app.use(RemoveUriSuffixMiddleware);
 
 require('./backend/apis.js')(app);
 
