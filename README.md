@@ -71,13 +71,17 @@ git clone https://github.com/KSAURAVSINGH/Criador.git
 ```terminal
 npm install
 ```
+
 ## Run the Project
 ```terminal
 npm start
 ```
-The project should run on 
-client - 'http://localhost:3000'
-server - 'http://localhost:8000'
+The project should run on: 
+- client - 'http://localhost:3000'
+- server - 'http://localhost:8000'
+
+- Add "proxy": "http://localhost:8000/" in package.json file of client to run locally
+- Remove the commented RemoveUriSuffixMiddleware function from app.js of server
 
 ## Dependencies Used
 
@@ -116,6 +120,8 @@ nodemon| ^3.0.1,
 passport| ^0.6.0,
 passport-local| ^1.0.0,
 path| ^0.12.7
+
+
 
 ## Contact Me
 kumarsauravsingh1234567890@gmail.com
